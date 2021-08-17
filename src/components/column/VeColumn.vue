@@ -14,7 +14,7 @@ export default  {
           value:[5817,260,34,3450]
         },
         color:[
-          new echarts.graphic.LinearGradient(1, 0, 0, 0,[{offset: 0, color: "rgba(32,142,181,1)"},{offset:1, color: "rgba(32,142,181,.05)"}]),
+          new this.$echarts.graphic.LinearGradient(1, 0, 0, 0,[{offset: 0, color: "rgba(32,142,181,1)"},{offset:1, color: "rgba(32,142,181,.05)"}]),
         ],
       }
     }
@@ -28,10 +28,10 @@ export default  {
   methods:{
    
     drawChart(){
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(this.$refs.column_con);
+      // 基于准备好的dom，初始化this.$echarts实例
+      let myChart = this.$echarts.init(this.$refs.column_con);
       // 指定图表的配置项和数据
-      var opVeColumn = new optionVeColumn(this.VeColumn);
+      var opVeColumn = new this.$echartsOp.optionVeColumn(this.VeColumn);
       opVeColumn.xAxis.show = false;
       opVeColumn.yAxis.show = false;
       opVeColumn.grid = {

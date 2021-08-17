@@ -28,10 +28,10 @@ export default  {
   methods:{
   
     drawChart(data){
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(this.$refs.column_con);
+      // 基于准备好的dom，初始化this.$echarts实例
+      let myChart = this.$echarts.init(this.$refs.column_con);
       // 指定图表的配置项和数据
-      var opMultiCircle = new optionMultiCircle(data,this.$refs.column_con);
+      var opMultiCircle = new this.$echartsOp.optionMultiCircle(data,this.$refs.column_con);
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(opMultiCircle);
 

@@ -1,3 +1,4 @@
+import * as echarts from 'echarts';
 //高德地图使用  echarts 数据格式化 geoJson  
 var gaodeMapJsonMaker = function (data,cityname) {
   // 存储当前搜索地区边界点

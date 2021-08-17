@@ -30,10 +30,10 @@ export default  {
   methods:{
    
     drawChart(data){
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(this.$refs.column_con);
+      // 基于准备好的dom，初始化this.$echarts实例
+      let myChart = this.$echarts.init(this.$refs.column_con);
       // 指定图表的配置项和数据
-      var opRadar = new optionRadar(data); //实例化雷达图对象
+      var opRadar = new this.$echartsOp.optionRadar(data); //实例化雷达图对象
       opRadar.radar[0].shape  = "polygon";
       // opRadar.radar[0].splitArea.areaStyle.color =["rgba(69,98,142,0.9)","rgba(69,98,142,0.7)","rgba(69,98,142,0.6)","rgba(69,98,142,0.5)","rgba(69,98,142,0.3)"] ;
       opRadar.radar[0].startAngle  = 90;

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import config from "@common/js/config.js";
+import * as echarts from 'echarts';
 import {get,post,postmult} from "@common/js/request.js";
 import api from "@common/js/api.js";
 import echartsOption from "@common/js/echartsOption.js";
@@ -10,6 +11,7 @@ Vue.config.productionTip = false
 
 // 公共方法
 Vue.prototype.$config = config;
+Vue.prototype.$echarts = echarts;
 
 // 请求方式
 Vue.prototype.$get = get;
@@ -20,7 +22,7 @@ Vue.prototype.$postmult = postmult;
 Vue.prototype.$api = api;
 
 // echart  配置
-Vue.prototype.$echartsOption = echartsOption;
+Vue.prototype.$echartsOp = echartsOption;
 
 //pc端大屏  整体百分比缩小
 

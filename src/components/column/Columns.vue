@@ -21,10 +21,10 @@ export default  {
       //     }
       //   ],
       //   color:[
-      //     new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#53a6ff'},{ offset: 1,color: '#0f83fe'}]),
-      //     new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#acf7f4'},{ offset: 1,color: '#4ef1eb'}]),
-      //     new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#d695ff'},{ offset: 1,color: '#b640ff'}]),
-      //     new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#EE5A24'},{ offset: 1,color: '#EA2027'}])
+      //     new this.$echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#53a6ff'},{ offset: 1,color: '#0f83fe'}]),
+      //     new this.$echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#acf7f4'},{ offset: 1,color: '#4ef1eb'}]),
+      //     new this.$echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#d695ff'},{ offset: 1,color: '#b640ff'}]),
+      //     new this.$echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [{offset: 0,color: '#EE5A24'},{ offset: 1,color: '#EA2027'}])
       //   ]
       // }
     }
@@ -37,11 +37,11 @@ export default  {
   },
   methods:{
     drawChart(data){
-      // 基于准备好的dom，初始化echarts实例
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(this.$refs.column_con);
+      // 基于准备好的dom，初始化this.$echarts实例
+      // 基于准备好的dom，初始化this.$echarts实例
+      let myChart = this.$echarts.init(this.$refs.column_con);
       // 指定图表的配置项和数据
-      var opColumns = new optionMulColumn(data); //实例化雷达图对象
+      var opColumns = new this.$echartsOp.optionMulColumn(data); //实例化雷达图对象
 
       opColumns.grid = data.grid;
       

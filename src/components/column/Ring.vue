@@ -15,10 +15,10 @@ export default  {
       //     {value: 0, name: '30-40(岁)'},
       //   ],
       //   color:[
-      //     new echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(31,191,175,1)"},{offset:.8, color: "rgba(31,191,175,0)"}]),
-      //     new echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(248,184,61,1)"},{offset:.8, color: "rgba(248,184,61,0)"}]),
-      //     new echarts.graphic.LinearGradient(0, 1, 0, 0,[{offset: 0, color: "rgba(48,183,233,1)"},{offset:.8, color: "rgba(31,191,175,0)"}]),
-      //     new echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(40,112,230,1)"},{offset:.8, color: "rgba(31,191,175,0)"}])
+      //     new this.$echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(31,191,175,1)"},{offset:.8, color: "rgba(31,191,175,0)"}]),
+      //     new this.$echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(248,184,61,1)"},{offset:.8, color: "rgba(248,184,61,0)"}]),
+      //     new this.$echarts.graphic.LinearGradient(0, 1, 0, 0,[{offset: 0, color: "rgba(48,183,233,1)"},{offset:.8, color: "rgba(31,191,175,0)"}]),
+      //     new this.$echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(40,112,230,1)"},{offset:.8, color: "rgba(31,191,175,0)"}])
       //   ],
             
       //   radius:["50%","70%"]
@@ -51,12 +51,12 @@ export default  {
   },
   methods:{
     drawChart(ring){
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(this.$refs.column_con);
+      // 基于准备好的dom，初始化this.$echarts实例
+      let myChart = this.$echarts.init(this.$refs.column_con);
 
 
       // 指定图表的配置项和数据
-      var opRing = new optionRing(ring);
+      var opRing = new this.$echartsOp.optionRing(ring);
 
       opRing.series[0].radius =ring.radius?ring.radius:["40%","60%"];
       opRing.series[0].center = ['30%', '50%'],

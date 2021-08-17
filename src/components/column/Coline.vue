@@ -17,7 +17,7 @@ export default  {
         },
 
         color:[
-          new echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(41,158,201,1)"},{offset:1, color: "rgba(41,158,201,.05)"}])
+          new this.$echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "rgba(41,158,201,1)"},{offset:1, color: "rgba(41,158,201,.05)"}])
         ],
       }
     }
@@ -29,10 +29,10 @@ export default  {
   },
   methods:{
     drawChart(data){
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(this.$refs.column_con);
+      // 基于准备好的dom，初始化this.$echarts实例
+      let myChart = this.$echarts.init(this.$refs.column_con);
       // 指定图表的配置项和数据
-      var opColumn = new optionColumn(data); 
+      var opColumn = new this.$echartsOp.optionColumn(data); 
 
       opColumn.yAxis[0].axisLine.lineStyle.color = 'rgba(0,0,0,0)';
       opColumn.yAxis[0].axisLabel.show = false;
@@ -69,7 +69,7 @@ export default  {
         },
         areaStyle: {
           normal: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
               offset: 0,
               color: 'rgba(67,155,253, 0.8)'
             }, {

@@ -22,11 +22,11 @@ export default  {
   },
   methods:{
     drawChart(data){
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(this.$refs.column_con);
+      // 基于准备好的dom，初始化this.$echarts实例
+      let myChart = this.$echarts.init(this.$refs.column_con);
 
       // 指定图表的配置项和数据
-      var opFoldline = new optionFoldline(data); //实例化雷达图对象
+      var opFoldline = new this.$echartsOp.optionFoldline(data); //实例化雷达图对象
       opFoldline.xAxis.data =  data.xAxis
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(opFoldline);
