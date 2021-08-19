@@ -118,6 +118,7 @@ export default{
       })
       var count =-1;
       var option = {
+       
         legend: {
           orient: '',
           icon: 'circle',
@@ -138,7 +139,7 @@ export default{
       }
       return option;
     },
-    
+
     /**圆环图
      * @param {*} data 
      *  ring:{
@@ -169,7 +170,9 @@ export default{
           trigger: 'item',
           formatter: "{b} {c}人",
           backgroundColor:'#000',
+          borderWidth:0,
           textStyle: {
+            color:"#fff",
             fontSize:16,
           },
           padding:10,
@@ -178,20 +181,17 @@ export default{
           show: true,
           orient: "vertical",
           // 禁止点击
-          selectedMode:false,
           itemHeight: 16, //修改icon图形大小
           itemWidth: 16, //修改icon图形大小
-          right:40,
-          top:30,
+          icon: "circle",
+          right:20,
+          top:'center',
           formatter: function (item) {   //让series 中的文字进行换行
             return item;
           },
           textStyle:{
             color:"#fff",
           },
-          itemStyle:{
-            color:"#fff"
-          }
         },
         grid: {
           bottom: 0
@@ -199,27 +199,10 @@ export default{
         series: [{
           type: 'pie',
           minAngle: 15,
-          radius: ["10%", '50%'],
-          center: ['50%', '50%'],
+          radius:["40%","60%"],
+          center:['30%', '50%'],
           color: color,
-          label: {
-            formatter: function (item) {  //让series 中的文字进行换行
-              var percent = item.percent +'%';
-              var data = ['{a|'+item.data.name+'}','{a|'+percent+'}'];
-              // return data.join("\n");
-              return data.join("");
-            },
-            rich: {
-              a:{
-                color: "#fff",
-                fontSize: 14,
-                position: "outside",
-                lineHeight: 25,
-                align:'center',
-              }
-            },
-            
-          },
+          label: { show: false,},
           data: data.data
         }]
       };
@@ -233,10 +216,15 @@ export default{
       var option = {
         tooltip : {
           trigger: 'axis',
+          borderWidth:0,
+          textStyle: {
+            color:"#fff",
+            fontSize:16,
+          },
           axisPointer: {
             type: 'cross',
             label: {
-            backgroundColor: '#6a7985'
+              backgroundColor: '#6a7985'
             }
           },
           // formatter: "{a} <br/>{b} : {c}"
@@ -339,8 +327,10 @@ export default{
               color: "rgba(13,139,243,0.2)"
             }
           },
+          borderWidth:0,
           textStyle: {
-            fontSize: 16
+            color:"#fff",
+            fontSize:16,
           },
           padding:20,
           backgroundColor:"#000"
@@ -356,28 +346,32 @@ export default{
           }
         },
         grid: {
-          left: '3%',
-          right: '4%',
-          bottom:"5%",
-          height:"86%",
-          containLabel: true
+          top:'15%',
+          left: '5%',
+          containLabel: true,
+          height:'80%',
+          width:'90%'
         },
-        yAxis: [{
+        yAxis: {
           type: 'value',
           axisLabel: {
-            color: '#fff',
+            color: '#656e77',
             fontSize: 14
           },
           axisLine: {
             lineStyle: {
-              color: '#4EECFC'
+              color: '#656e77'
             }
           },
           splitLine: {
-            show: false
+            show: true,
+            lineStyle: {
+              type:"dashed",
+              color: '#656e77'
+            }
           }
-        }],
-        xAxis: [{
+        },
+        xAxis: {
           type: 'category',
           axisLabel: {
             color: '#fff',
@@ -385,19 +379,20 @@ export default{
           },
           axisLine: {
             lineStyle: {
-              color: '#4EECFC'
+              color: '#656e77'
             }
           },
           axisTick: {
             show: false
           },
           data: data.data.name
-        }],
-        series: [{
+        },
+        series: {
           data: data.data.value,
-          barWidth:"25%",
+          barWidth:"65%",
           itemStyle: {
             normal: {
+              borderRadius: [3, 3, 0,0],
               color: colors[0],
             }
           },
@@ -407,7 +402,7 @@ export default{
             }
           },
           type: 'bar'
-        }]
+        }
       };
     
       return option;
@@ -457,8 +452,10 @@ export default{
               color: "rgba(13,139,243,0.2)"
             }
           },
+          borderWidth:0,
           textStyle: {
-            fontSize: 16
+            color:"#fff",
+            fontSize:16,
           },
           padding:20,
           backgroundColor:"#000"
@@ -481,16 +478,20 @@ export default{
         yAxis: [{
           type: 'value',
           axisLabel: {
-            color: '#8a9ecf',
+            color: '#656e77',
             fontSize: 14
           },
           axisLine: {
             lineStyle: {
-              color: '#4EECFC'
+              color: '#656e77'
             }
           },
           splitLine: {
-            show: false
+            show: true,
+            lineStyle: {
+              type:"dashed",
+              color: '#656e77'
+            }
           }
         }],
         xAxis: [{
@@ -501,7 +502,7 @@ export default{
           },
           axisLine: {
             lineStyle: {
-              color: '#4EECFC'
+              color: '#656e77'
             }
           },
           axisTick: {
@@ -580,8 +581,10 @@ export default{
               color: "rgba(13,139,243,0.2)"
             }
           },
+          borderWidth:0,
           textStyle: {
-            fontSize: 16
+            color:"#fff",
+            fontSize:16,
           },
           padding:20,
           backgroundColor:"#000"
@@ -667,7 +670,9 @@ export default{
             }
           },
           padding:10,
+          borderWidth:0,
           textStyle: {
+            color:"#fff",
             fontSize:16,
           },
           backgroundColor:"#000"
@@ -756,47 +761,53 @@ export default{
         tooltip: {
           trigger: 'axis'
         },
-        radar: [
-          {
+        radar:[{
             indicator: data.indicator,
-            radius: '25%',
-            shape: 'circle',
-            startAngle:-45,
-            center: ['40%', '50%'],
-            // 注意这里要放到name里面   和官方文档不一样
+            radius: '70%',
+            shape: 'polygon',
+            center:  ["50%","50%"],
+            // 注意这里要放到name textStyle里面   和官方文档不一样
             name: {
               textStyle: {
                 fontSize: 16,
-                color:"#30B4E4"
+                color: "#e6e7e9",
               },
             },
-            radius: "50%",
             splitArea: { //间隔填充色
               show: true,
               areaStyle:{
                 color:["rgba(69,98,142,0.9)","rgba(69,98,142,0.7)","rgba(69,98,142,0.6)","rgba(69,98,142,0.5)","rgba(69,98,142,0.3)"] 
               }
             },
-            
             splitLine:{
               lineStyle:{
                 color:"rgba(221,221,221,.1)"
               }
             },
-    
             axisLine:{
               lineStyle:{
                 width:1,
                 color:'rgba(221,221,221,.1)'
               }
             }
-          }
-        ],
+        }],
         series: [{
           type: 'radar',
+          // 拐点颜色
+          itemStyle:{
+            normal:{
+              color:"#3095f9",
+              borderWidth:2,
+            },
+          },
+          // 绘制线条颜色
           lineStyle: {
             width: 2,
-            color:"#ef7f43"
+            color:"rgba(48,149,249,.6)"
+          },
+          // 绘制区域颜色
+          areaStyle:{
+            color:'rgba(48,149,249,.4)'
           },
           data: data.data
         }]
@@ -816,7 +827,6 @@ export default{
       }
      */ 
     optionFunnel:function(data){
-      console.log("|data.colo",data.color);
       var option = {
         // 颜色
         
@@ -851,29 +861,9 @@ export default{
             padding:5,
             fontSize:14,
             formatter:function(el){
-              console.log("el",el);
               return el.data.name+"  "+el.data.val+"条";
             },
           },
-          // markLine: {
-          //   symbol: 'none',
-          //   zlevel: 0,
-          //   label:{
-          //     show:true,
-          //     formatter:'{b}: {d}'
-          //     // formatter:function(el){
-          //     //   console.log("el",el);
-          //     //   return el.data.name+"  "+el.data.val+"条";
-          //     // },
-          //   },
-          //   data: [
-          //     [{x:'50%',y:'18%'},{x:'70%',y:'18%',lineStyle:{color:"#108ee9"}}],
-          //     [{x:'50%',y:'34%'},{x:'70%',y:'34%',lineStyle:{color:"#108eee9"}}],
-          //     [{x:'50%',y:'50%'},{x:'70%',y:'50%',lineStyle:{color:"#108eee9"}}],
-          //     [{x:'50%',y:'66%'},{x:'70%',y:'66%',lineStyle:{color:"#108eee9"}}],
-          //     [{x:'50%',y:'82%'},{x:'70%',y:'82%',lineStyle:{color:"#108eee9"}}]
-          //   ]
-          // },
           labelLine: {
             length: 30,
             lineStyle: {
@@ -882,10 +872,8 @@ export default{
             }
           },
           itemStyle: {
-            normal:{
-              borderWidth: 5,
-              borderColor:"#fff"
-            }
+            borderWidth: 5,
+            borderColor:"#fff"
           },
           data:data.data
         }
@@ -1116,7 +1104,7 @@ export default{
             label:{
               show:true,
               position: 'top',
-              color:"#fff",
+              color:"#fff"
             },
             itemStyle:{
               areaColor:"rgba(0,56,100,.2)",
