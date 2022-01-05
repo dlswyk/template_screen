@@ -10,13 +10,7 @@
 </template>
 
 <script>
-import Ring from '@components/column/Ring.vue'
-import Vecolumn from '@components/column/VeColumn.vue'
 export default  {
-  components:{
-    Ring,
-    Vecolumn
-  },
   data(){
     return{
       

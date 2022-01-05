@@ -26,7 +26,7 @@ module.exports =  {
   chainWebpack:config => {
     config.resolve.alias
       .set('@components',path.join(__dirname,'./src/components'))
-      .set('@common',path.join(__dirname,'./common'))
+      .set('@common',path.join(__dirname,'./src/static'))
       .set('@views',path.join(__dirname,'./src/views'))
   }
 }
