@@ -1,6 +1,7 @@
 <template>
   <!-- j-flex-col display锤子布局 j-full-curbox当前盒子充满父级元素-->
   <div class="j-flex-col j-full-curbox">
+    
     <Header class="header"></Header>
 
     <div class="container">
@@ -36,6 +37,15 @@ export default  {
 </script>
 
 <style lang="scss" scoped>
+  .bg{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .8;
+  }
   .container{
     flex: 1;
     display: flex;

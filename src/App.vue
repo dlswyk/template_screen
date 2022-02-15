@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <video data-v-56e50520="" data-v-4f5db6fa="" src="@/static/video/bg.mp4?v=1.0.0" autoplay="autoplay" loop="loop" muted="muted" width="100%" height="100%" class="bg"></video>
     <router-view/>
   </div>
 </template>
