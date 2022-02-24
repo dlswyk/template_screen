@@ -30,7 +30,7 @@ class Basis {
                 width: 17,
                 height: 18,
                 backgroundColor: {
-                  // image: require('@common/images/icon.png')
+                  // image: require('@/static/images/icon.png')
                 }
               },
               b: {

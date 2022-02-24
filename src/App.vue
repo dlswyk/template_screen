@@ -16,7 +16,7 @@ export default{
 
 
 <style lang="scss">
-  @import url('~@common/css/common.css');
+  @import url('~@/static/css/common.css');
   
   #app{width: 100%;height: 100%;background:rgba(221,221,221,.2);}
 

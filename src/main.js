@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import config from "@common/js/config.js";
+import config from "@/static/js/config.js";
 import * as echarts from 'echarts';
-import {get,post,postmult} from "@common/js/request.js";
-import api from "@common/js/api.js";
-import echartsOption from "@common/js/echartsOption.js";
+import {get,post,postmult} from "@/static/js/request.js";
+import api from "@/static/js/api.js";
+import echartsOption from "@/static/js/echartsOption.js";
 
 Vue.config.productionTip = false
 

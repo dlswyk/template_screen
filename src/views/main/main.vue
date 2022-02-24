@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import Map from '@components/map/map.vue'
-import Footer from '@views/footer/footer.vue'
+import Map from '@/components/map/map.vue'
+import Footer from '@/views/footer/footer.vue'
 export default  {
   components:{
     Map,

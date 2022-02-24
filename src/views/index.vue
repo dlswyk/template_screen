@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import Header from '@views/header/header.vue'
-import sideLeft from '@views/side/SideLeft.vue'
-import sideRight from '@views/side/SideRight.vue'
-import Main from '@views/main/main.vue'
+import Header from '@/views/header/header.vue'
+import sideLeft from '@/views/side/SideLeft.vue'
+import sideRight from '@/views/side/SideRight.vue'
+import Main from '@/views/main/main.vue'
 export default  {
   components:{
     Header,
