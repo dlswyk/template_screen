@@ -31,7 +31,11 @@ export default {
   },
   mounted() {
     this.setScale()
-    window.onresize = this.Debounce(this.setScale, 1000)
+    window.addEventListener('resize',this.Debounce(this.setScale, 1000))
+    this.$once('hook:beforeDestroy',()=>{
+      console.log("入而出");
+      window.removeEventListener('resize',this.setScale)
+    })
   },
   methods: {
     Debounce: (fn, t) => {
