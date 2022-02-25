@@ -5,7 +5,7 @@ import config from "@/static/js/config.js";
 import * as echarts from 'echarts';
 import {get,post,postmult} from "@/static/js/request.js";
 import api from "@/static/js/api.js";
-import echartsOption from "@/static/js/echartsOption.js";
+import echartsOption from "@/static/js/echartOp.js";
 
 Vue.config.productionTip = false
 

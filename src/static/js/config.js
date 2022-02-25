@@ -174,31 +174,29 @@ export default {
   }
 }
 
-!(function (doc, win) {
-  // 建立在html和body设置height设置100%的情况下
+// !(function (doc, win) {
+//   // 建立在html和body设置height设置100%的情况下
 
-  var docEle = doc.documentElement,
-      evt = 'resize', 
-      width=1920,
-      height=1080,
-      fn = function () {
-        let scale; //缩小比例
+//   var docEle = doc.documentElement,
+//       evt = 'resize', 
+//       width=1920,
+//       height=1080,
+//       fn = function () {
+//         let scale; //缩小比例
       
-        let scaleX = docEle.clientWidth / width;
-        let scaleY = docEle.clientHeight / height;
-        // 如果屏幕比例小于width的按照小的比例来缩放
-        scale = docEle.clientWidth<width?Math.min(scaleX,scaleY):Math.max(scaleX,scaleY);
+//         let scaleX = docEle.clientWidth / width;
+//         let scaleY = docEle.clientHeight / height;
+//         // 如果屏幕比例小于width的按照小的比例来缩放
+//         scale = docEle.clientWidth<width?Math.min(scaleX,scaleY):Math.max(scaleX,scaleY);
+
+//         let str = `width:${width}px;height:${height}px;font-size:${width / 19.2}px;transform:scale(${scale});transform-origin: left top;overflow:${docEle.clientWidth<width?'hidden':'auto'}`
         
-        // 动态设置全局html元素样式   font-size 100px 
-        docEle.style.cssText =`width:${width}px;
-                              height:${height}px;
-                              font-size:${width / 19.2}px;
-                              transform:scale(${scale});
-                              transform-origin: left top;`;
-      };
-    fn();
-    win.addEventListener(evt, fn, false);
-}(document, window));
+//         // 动态设置全局html元素样式   font-size 100px 
+//         docEle.style.cssText =str;
+//       };
+//     fn();
+//     win.addEventListener(evt, fn, false);
+// }(document, window));
 
 
 Date.prototype.format = function (fmt) { //author: meizz 

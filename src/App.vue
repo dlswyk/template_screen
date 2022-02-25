@@ -1,15 +1,19 @@
 <template>
   <div id="app">
-    <video src="@/static/video/bg.mp4?v=1.0.0" autoplay="autoplay" loop="loop" muted="muted" width="100%" height="100%" class="bg_video"></video>
-    <router-view/>
+    <ScreenAdapter>
+      <video src="@/static/video/bg.mp4?v=1.0.0" autoplay="autoplay" loop="loop" muted="muted" width="100%" height="100%" class="bg_video"></video>
+      <router-view/>
+    </ScreenAdapter>
+    
   </div>
 </template>
 
 <script>
 
+import ScreenAdapter from "@/components/ScreenAdapter/index.vue"
 export default{
-  mounted(){
-    
+  components:{
+    ScreenAdapter
   }
 }
 </script>
