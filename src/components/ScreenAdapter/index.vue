@@ -66,6 +66,14 @@ export default {
     // 设置比例
     setScale() {
       // translate(-50%, -50%)
+      if(document.documentElement.clientWidth < this.width){
+        this.style.transform = 'scale(' + this.getScale() + ') translate(-50%, -50%)';
+        this.style.left="50%";
+        this.style.top ="50%";
+        return;
+      }
+      this.style.left="0";
+      this.style.top ="0";
       this.style.transform = 'scale(' + this.getScale() + ')'
       console.log('任你千变万化,我都不会影响性能')
     }
@@ -76,8 +84,6 @@ export default {
 .ScreenAdapter {
   transform-origin: 0 0;
   position: absolute;
-  // left: 50%;
-  // top: 50%;
   transition: 0.3s;
 }
 </style>
