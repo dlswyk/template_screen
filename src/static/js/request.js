@@ -2,9 +2,15 @@
  * 请求拦截、相应拦截、错误统一处理
  */
  import axios from 'axios';
- import F from "@/static/js/config.js";
- import api from "@/static/js/api.js";
+ import F from "@common/js/config.js";
  
+
+ // 环境的切换
+if (process.env.NODE_ENV == 'dev') {
+  axios.defaults.baseURL = 'api/';
+} else {
+  axios.defaults.baseURL = process.env.VUE_APP_URL;
+}
  
  
  // 请求超时时间
@@ -84,19 +90,6 @@
   
  //错误统一处理
  function handle(res){
-   // zlb
-   if(res && res.code == "-9001"){
-     // return;
-     sessionStorage.url = window.location.hash;
-     sessionStorage.AUTHORIZE = false;
-     
-     let url = '';
-     // 模拟登陆 mock:true  真是登陆 mock false
-     api.mock?url = api.common.personMock:url = api.zlb.login;
- 
-     location.href =api.baseUrl + url + "?callback_url="+api.callback_url+"&mid="+2;
-     return;
-   }
  
    F.tip(res.msg?res.msg:"请稍后再试");
  }
@@ -106,18 +99,16 @@
  * @param {Object} params [请求时携带的参数] 
  * @param {Object} opt 用于自定义处理配置
  */
- export function get(url,params,opt) {
+ export function get(url,params,opt={}) {
    F.loading(false);
    F.loading();
    return new Promise((resolve, reject) => {
- 
-     if(!opt){url =api.baseUrl+url;}
  
      axios.get(url,{params: params})
        .then(res => {
          F.loading(false);
    
-         if(res.data.code == "200"){
+         if(res.data.code == "200" || opt.back){
            resolve(res.data);
          }else{
            handle(res.data)
@@ -136,20 +127,18 @@
  * @param {Object} params [请求时携带的参数] 
  * @param {Object} opt 用于自定义处理配置
  */
- export function post(url, params,opt) {
+ export function post(url, params,opt={}) {
    F.loading(false);
    F.loading();
  
    return new Promise((resolve, reject) => {
- 
-     if(!opt){url =api.baseUrl+url;}
      
      axios.post(url, params)
        .then(res => {
  
          F.loading(false);
  
-         if(res.data.code == "200"){
+         if(res.data.code == "200" || opt.back){
            resolve(res.data);
          }else{
            handle(res.data)
@@ -167,20 +156,18 @@
  * @param {String} url [请求的url地址] 
  * @param {Object} params [请求时携带的参数] 
  */
- export function postmult(url, params,opt,headers) {
+ export function postmult(url, params,opt={},headers) {
    F.loading(false);
    F.loading();
  
    return new Promise((resolve, reject) => {
- 
-     if(!opt){url =api.baseUrl+url;}
      
      axios.post(url, params,headers)
        .then(res => {
  
          F.loading(false);
  
-         if(res.data.code == "200"){
+         if(res.data.code == "200" || opt.back){
            resolve(res.data);
          }else{
            handle(res.data)
