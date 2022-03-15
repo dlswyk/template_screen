@@ -7,7 +7,8 @@ class Basis {
   // echarts 初始化及配置 记忆动态适应
   static render(current, option) {
     let myChart = echarts.init(current);
-
+    
+    // 如果已经使用了transform：scale（）去缩小整体比例  不需要在监听重新渲染，同时也为了解决keep-alive下，页面大小改变，重新切换页面渲染问题
     window.addEventListener('resize', () => {
       myChart.resize();
     });
@@ -63,13 +64,13 @@ class Basis {
 
 class Pie {
   /**
-   * @param {*} obj 
-   * @param {*} obj.title 名称 
-   * @param {*} obj.data  数据
+   * @param {*} opt 
+   * @param {*} opt.title 名称 
+   * @param {*} opt.data  数据
    * @returns 
    * 
    * @示例
-   * obj:{
+   * opt:{
       title:"饼图" ,
       data:[
         { value: 1048, name: '部门任务数量' },
@@ -77,10 +78,10 @@ class Pie {
       ],
     },
    */
-  renderPie(obj) {
-    const data = obj.data;
+  renderPie(opt) {
+    const data = opt.data;
     return {
-      title: obj.title && Basis.titleOp(obj).title,
+      title: opt.title && Basis.titleOp(opt).title,
 
       tooltip: {
         trigger: 'item',
@@ -140,21 +141,21 @@ class Pie {
 
 // 柱状图
 class Bar {
-  /**
-   * @param {*} obj 
-   * @param {*} obj.axis  x轴数据 
-   * @param {*} obj.data  数据
+  /**柱状图
+   * @param {*} opt 
+   * @param {*} opt.axis  x轴数据 
+   * @param {*} opt.data  数据
    * @returns 
    * 
    * @示例
-   * obj:{
+   * opt:{
       axis:['Mon', 'Tue', 'Wed', 'Thu'],
-      value:[83,66,57,46]
+      data:[83,66,57,46]
     }
    */
-  renderBar(obj) {
+  renderBar(opt) {
     return {
-      title: obj.title && Basis.titleOp(obj).title,
+      title: opt.title && Basis.titleOp(opt).title,
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -177,7 +178,7 @@ class Bar {
       },
       xAxis: {
         type: 'category',
-        data: obj.axis,   // x轴标签
+        data: opt.axis,   // x轴标签
         axisTick: {     // 刻度隐藏
           show: false,
         },
@@ -231,9 +232,12 @@ class Bar {
           barGap: '5%',
           label:{
             show:true,
-            position:'top'
+            position:'top',
+            color:"#fff",
+            // echart5.x 设置textBorderColor为其他值 不设置textBorderWidth就能够去除文字白色边框
+            textBorderColor: 'inherit',
           },
-          data: obj.data,
+          data: opt.data,
           itemStyle: {
             normal:{
               color: '#5E92F6',
@@ -246,17 +250,19 @@ class Bar {
     }
   }
   
-  /**
-   * @param {*} obj 
-   * @param {*} obj.axis  x轴数据 
-   * @param {*} obj.legend
-   * @param {*} obj.default 不需要设置  使用默认处理方式
-   * @param {*} obj.data  数据
+  /**堆叠柱状图
+   * @param {*} opt 
+   * @param {*} opt.axis  x轴数据 
+   * @param {*} opt.stack  是否堆叠
+   * @param {*} opt.legend
+   * @param {*} opt.default 不需要设置  使用默认处理方式 设置false 自行处理
+   * @param {*} opt.data  数据
    * @returns 
    * 
    * @示例
-   * obj:{
+   * opt:{
       axis:['Mon', 'Tue', 'Wed', 'Thu'],
+      stack:true,
       legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
       data:[
         [320, 332, 301, 334, 390],
@@ -267,23 +273,23 @@ class Bar {
     }
    */
 
-  renderMultiBar(obj){
+  renderMultiBar(opt){
     var series = [];
-    console.log("!obj.default",!obj.default,obj);
-    if(!obj.default){
-      for(var i=0;i<obj.axis.length;i++){
+    console.log("!opt.default",opt.default,opt);
+    if(opt.default != false){
+      for(var i=0;i<opt.axis.length;i++){
         series.push(
           {
-            data: obj.data[i],
+            data: opt.data[i],
             // 是否堆叠
-            stack: obj.stack || '',
-            barWidth:obj.stack?'30%':'10',
+            stack: opt.stack || '',
+            barWidth:opt.stack?'30%':'10',
             itemStyle: {
               normal: {
-                color:obj.color && obj.color[i%obj.color.length],
+                color:opt.color && opt.color[i%opt.color.length],
               }
             },
-            name: obj.legend[i],
+            name: opt.legend[i],
             type: 'bar'
           }
         )
@@ -311,7 +317,7 @@ class Bar {
       },
       legend: {
         show:false,
-        data: obj.legend,
+        data: opt.legend,
         icon: "circle",
         textStyle: {
           color: 'rgba(255,255,255,1)',
@@ -356,10 +362,10 @@ class Bar {
         axisTick: {
           show: false
         },
-        data: obj.axis
+        data: opt.axis
       }],
       //多列
-      series: !obj.default && series
+      series: opt.default!=false && series
     }
   }
 }
@@ -367,21 +373,21 @@ class Bar {
 
 // 折线图
 class FoldLine {
-  /**
-   * @param {*} obj 
-   * @param {*} obj.axis  x轴数据 
-   * @param {*} obj.data  数据
+  /**折线图
+   * @param {*} opt 
+   * @param {*} opt.axis  x轴数据 
+   * @param {*} opt.data  数据
    * @returns 
    * 
    * @示例
-   * obj:{
+   * opt:{
       axis:['Mon', 'Tue', 'Wed', 'Thu'],
       data:[83,66,57,46]
     }
    */
-  renderFoldLine(obj) {
+  renderFoldLine(opt) {
     return {
-      title: obj.title && Basis.titleOp(obj).title,
+      title: opt.title && Basis.titleOp(opt).title,
       xAxis: {
         type: 'category',
         offset: 5,  // x轴标签距离x轴向下偏移
@@ -394,7 +400,7 @@ class FoldLine {
           lineStyle: {color: '#fff'}
         },
         // x轴标签
-        data: obj.axis
+        data: opt.axis
       },
       yAxis: {
         type: 'value',
@@ -421,14 +427,15 @@ class FoldLine {
         }
       },
       grid: {
-        bottom: '16%',
+        top:"10%",
+        bottom: '10%',
         left: '3%',
         right: '4%',
         containLabel: true,
       },
       series: [
         {
-          data: obj.data,
+          data: opt.data,
           type: 'line',
           smooth: true,   // 曲面平滑效果
           symbol: 'none', // 不显示点
@@ -470,51 +477,55 @@ function getSeriesItemMax(array) {
   console.log(array)
   var res = [];
   array.forEach((item) => {
-    item.forEach((i, idx) => {
-      if (!res[idx]) {
-        if (isNaN(i / 1)) {
-          res[idx] = 0
-        } else {
-          res[idx] = i / 1
-        }
-      } else {
-        if (isNaN(i / 1)) {
-          res[idx] += 0
-        } else {
-          res[idx] += i / 1
-        }
-      }
-    })
+      item.forEach((i, idx) => {
+          if (!res[idx]) {
+              if (isNaN(i / 1)) {
+                  res[idx] = 0
+              } else {
+                  res[idx] = i / 1
+              }
+          } else {
+              if (isNaN(i / 1)) {
+                  res[idx] += 0
+              } else {
+                  res[idx] += i / 1
+              }
+          }
+      })
   });
   return Math.max.apply(null, res)
 }
 
 // 刻度最大值
-function yAxisMax(maxValue) {
+function yAxisMax(maxValue,it=20) {
   if (isNaN(maxValue / 1) || maxValue / 1 < 10) {
     return 10
   }
   const max = Math.ceil(maxValue) + '';
-  const itemValue = Math.ceil(max / 5) + '';
+  const itemValue = Math.ceil(max / it) + '';
   const mins = Math.ceil((itemValue / Math.pow(10, itemValue.length - 1)))
   const item = mins * Math.pow(10, itemValue.length - 1) + '';
   // item 需要是5的整数倍
-  const res = Math.ceil(item / 5) * 5 * 5;
+  const res = Math.ceil(item / it) *it * it;
   return res
 }
 
-// 堆叠  柱状图折线图组合  ！！！未完成
+
+// 堆叠  柱状图折线图组合 
 class renderMult{
   /**
-   * @param {*} obj 
-   * @param {*} obj.axis  x轴数据 
-   * @param {*} obj.legend
-   * @param {*} obj.data  数据
+   * @param {*} opt 
+   * @param {*} opt.axis  x轴数据 
+   * @param {*} opt.legend
+   * @param {*} opt.stack 是否堆叠
+   * @param {*} opt.yAxisMax 用于处理刻度线对齐问题
+   * @param {*} opt.default 不需要设置  使用默认处理方式 设置false 自行处理
+   * @param {*} opt.data  数据
    * @returns 
    * 
    * @示例
-   * obj:{
-      axis:['Mon', 'Tue', 'Wed', 'Thu'],
+   * opt:{
+      axis:['Mon', 'Tue', 'Wed', 'Thu',"Tht"],
       legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
       data:[
         {"title": "Forest",yAxisIndex:1,type:'line',"value":[320, 332, 301, 334, 390]},
@@ -524,17 +535,16 @@ class renderMult{
       ],
     }
    */
-
-  renderMultiBar(obj){
-    console.log("renderMultiBar",obj);
+  renderMultiBar(opt){
+    console.log("renderMultiBar",opt.default,opt);
       //存储双轴刻度值
       //存储双轴刻度值
     var y1DataList = [];
     var y2DataList = []
 
     // 数据处理
-    var serDAta = [];
-    obj.data.map((item,index)=>{
+    var series = [];
+    opt.data.map((item,index)=>{
 
       //双刻度分类
       if (item.type === 'line') {
@@ -542,45 +552,52 @@ class renderMult{
       } else{
         y1DataList.push(item.value)
       }
-
-      serDAta.push(
-        {
-          name: item.title,
-          type: item.type?item.type:'bar',
-          // stack: opt.stack || '',
-          // barWidth:opt.stack?'30%':'10',
-          yAxisIndex: item.yAxisIndex?item.yAxisIndex:0,
-          itemStyle: {
-            normal: {
-              color:obj.colors[index%obj.colors.length],
+      
+      if(opt.default != false){
+        series.push(
+          {
+            name: item.title,
+            type: item.type?item.type:'bar',
+            stack: item.type!='line'&& opt.stack || '',
+            barWidth:opt.stack?'30%':'10',
+            yAxisIndex: item.yAxisIndex?item.yAxisIndex:0,
+            itemStyle: {
+              normal: {
+                color:opt.color && opt.color[index%opt.color.length],
+              }
+            },
+            lineStyle: {
+              color: "#4bcffa"
+            },
+            tooltip: {
+              valueFormatter: function (value) {
+                return value + ' ml';
+              }
+            },
+            data: item.value,
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgba(67,155,253, 0.8)'
+                }, {
+                  offset: 0.2,
+                  color: 'rgba(67,155,253, 0)'
+                }], false),
+                shadowColor: 'rgba(0, 0, 0, 0.2)',
+                shadowBlur: 10
+              }
             }
-          },
-          lineStyle: {
-            color: "#4bcffa"
-          },
-          data: item.value,
-          areaStyle: {
-            normal: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: 'rgba(67,155,253, 0.8)'
-              }, {
-                offset: 0.2,
-                color: 'rgba(67,155,253, 0)'
-              }], false),
-              shadowColor: 'rgba(0, 0, 0, 0.2)',
-              shadowBlur: 10
-            }
-          },
-        }
-      )
+          }
+        )
+      }
     })
 
     var y1MaxValue = getSeriesItemMax(y1DataList) // 柱状图最大值
     var y2MaxValue = getSeriesItemMax(y2DataList) // 折线图最大值
 
-    var y1Max = yAxisMax(y1MaxValue);
-    var y2Max = yAxisMax(y2MaxValue);
+    var y1Max = yAxisMax(y1MaxValue,opt.yAxisMax);
+    var y2Max = yAxisMax(y2MaxValue,opt.yAxisMax);
 
     return {
       
@@ -591,10 +608,8 @@ class renderMult{
         }
       },
       legend: {
-        icon:'circle',
-        right:0,
+        right:"5%",
         top:0,
-
         textStyle: {
           color: "#fff"
         },
@@ -606,14 +621,14 @@ class renderMult{
 
       grid: {
         top: '15%',
-        left:'0',
-        height: '85%',
-        width: '100%',
+        bottom: '5%',
+        left: '3%',
+        right: '4%',
         containLabel:true
       },
       xAxis: {
         type: 'category',
-        data: obj.axis,
+        data: opt.axis,
         axisLabel: {
           color: '#FFF',
           fontSize: 12,
@@ -678,7 +693,7 @@ class renderMult{
           max: y2Max,
         }
       ],
-      series: serDAta
+      series: opt.default!=false && series
     }
   }
 }
@@ -686,14 +701,14 @@ class renderMult{
 class Gauge {
 
   /**
-   * @param {*} obj
-   * @param {*} obj.name  名称
-   * @param {*} obj.data  数据
-   * @param {*} obj.max  数据最大值
+   * @param {*} opt
+   * @param {*} opt.name  名称
+   * @param {*} opt.data  数据
+   * @param {*} opt.max  数据最大值
    * @returns
    *
    * @示例
-   * obj:{
+   * opt:{
       name:'入住人数',
       max: 100,
       data:[
@@ -702,8 +717,8 @@ class Gauge {
     }
    */
 
-  renderGauge(obj) {
-    obj.data.map(item => {
+  renderGauge(opt) {
+    opt.data.map(item => {
       item.title = {show: false}
       return item
     })
@@ -717,7 +732,7 @@ class Gauge {
           startAngle: 240,
           endAngle: -60,
           min: 0,
-          max: obj.max,
+          max: opt.max,
           radius: '80%',
           axisLine: {
             lineStyle: {
@@ -779,12 +794,12 @@ class Gauge {
             },
           },
           detail: {
-            formatter: obj.name + ': {value}' + (obj.company || ''),
+            formatter: opt.name + ': {value}' + (opt.company || ''),
             show: true,
             color: '#fff',
             offsetCenter: [0, '-135%']
           },
-          data: obj.data,
+          data: opt.data,
         },
         {
           type: 'gauge',
@@ -792,7 +807,7 @@ class Gauge {
           endAngle: -60,
           radius: '90%',
           min: 0,
-          max: obj.max,
+          max: opt.max,
           itemStyle: {
             color: {
               type: 'linear',
@@ -830,7 +845,7 @@ class Gauge {
           detail: {
             show: false
           },
-          data: obj.data,
+          data: opt.data,
         }
       ]
     }
@@ -843,5 +858,6 @@ export default {
   Pie,
   Bar,
   FoldLine,
-  Gauge
+  Gauge,
+  renderMult
 }
