@@ -1,5 +1,8 @@
 import * as echarts from 'echarts';
 
+function isNaN_(params){
+  return isNaN(params)?0:params
+}
 class Basis {
   // 全局主色调
   static color = ['#60D7A7', '#2060ED', '#F9CB34',  '#6242FB', '#1041AA'];
@@ -9,11 +12,13 @@ class Basis {
     let myChart = echarts.init(current);
     
     // 如果已经使用了transform：scale（）去缩小整体比例  不需要在监听重新渲染，同时也为了解决keep-alive下，页面大小改变，重新切换页面渲染问题
-    window.addEventListener('resize', () => {
-      myChart.resize();
-    });
+    // window.addEventListener('resize', () => {
+    //   myChart.resize();
+    // });
 
-    return myChart.setOption(option);
+    myChart.setOption(option)
+    
+    return myChart;
   }
 
   // 标题属性
@@ -110,7 +115,8 @@ class Pie {
               tarValue = data[i].value;
             }
           }
-          return `{a|${name}}  ${((tarValue/total)*100).toFixed(2)+'%'}`;
+
+          return `{a|${name}}  ${((isNaN_(tarValue/total))*100).toFixed(2)+'%'}`;
         },
         textStyle:{
           fontSize: 14,
@@ -129,12 +135,99 @@ class Pie {
       },
       series: [{
         type: 'pie',
-        minAngle: 15,
+        // minAngle: 15,
         radius:["40%","60%"],
         center:['30%', '50%'],
         label: { show: false,},
         data: data
       }]
+    }
+  }
+
+  /**
+   * @param {*} opt 
+   * @param {*} opt.title 名称 
+   * @param {*} opt.data  数据
+   * @param {*} opt.default  不需要设置  使用默认处理方式 如果设置false 自行处理
+   * @returns 
+   * 
+   * @示例
+   * opt:{
+      title:"多圆环图" ,
+      data:[
+        data:[
+          [
+            { value: 231, name: '男' },
+            { value: 1048, name: '女' },
+          ],
+          [
+            { value: 231, name: '60-69岁' },
+            { value: 1048, name: '70-79岁' },
+            { value: 1048, name: '80-89岁' },
+            { value: 1048, name: '90-99岁' },
+            { value: 1048, name: '100岁及以上' },
+          ],
+        ],
+      ],
+    },
+  */
+  renderrMultiPie(opt) {
+    const data = opt.data;
+    if(opt.default != false){
+      var series = [];
+      var radiusWidth = 16;  //多圆环宽度
+      var radiusSpace = 26;  //多圆环间距
+      for(var i=0;i<data.length;i++){
+        var radius = (i+1)*radiusSpace;
+        series.push(
+          {
+            type: 'pie',
+            minAngle: 15,
+            radius: [radius,radius+radiusWidth],
+            center:['30%', '50%'],
+            label: { show: false,},
+            data: data[i]
+          }
+        )
+      }
+    }
+    return {
+      title: opt.title && Basis.titleOp(opt).title,
+
+      tooltip: {
+        trigger: 'item',
+        backgroundColor:'#fff',
+        borderWidth:0,
+        textStyle: {
+          color:"#5e92f6",
+          fontSize:16,
+        },
+        padding:10,
+      },
+        // 图例
+      legend:{
+        orient: 'vertical',
+        top: 'center',
+        right:"2%",
+        itemWidth: 8,   // 图例文本前小图形的宽高
+        itemHeight: 8,
+        icon: 'circle',
+        textStyle:{
+          fontSize: 14,
+          color: '#666666',
+          lineHeight: 20,
+          rich: {
+            a:{
+              width: 60,
+            },
+            b:{
+              width: 50,
+              padding:[0,0,0,10],
+            },
+          }
+        }
+      },
+      series: opt.default!=false && series
     }
   }
 }
@@ -234,7 +327,7 @@ class Bar {
             show:true,
             position:'top',
             color:"#fff",
-            // echart5.x 设置textBorderColor为其他值 不设置textBorderWidth就能够去除文字白色边框
+            // echart5.x  注意必须设置color同事设置textBorderColor为其他值 不设置textBorderWidth就能够去除文字白色边框
             textBorderColor: 'inherit',
           },
           data: opt.data,
@@ -255,8 +348,8 @@ class Bar {
    * @param {*} opt.axis  x轴数据 
    * @param {*} opt.stack  是否堆叠
    * @param {*} opt.legend
-   * @param {*} opt.default 不需要设置  使用默认处理方式 设置false 自行处理
-   * @param {*} opt.data  数据
+   * @param {*} opt.default 不需要设置  使用默认处理方式 如果设置false 处理
+   * @param自行处理*} opt.data  数据
    * @returns 
    * 
    * @示例
@@ -275,9 +368,9 @@ class Bar {
 
   renderMultiBar(opt){
     var series = [];
-    console.log("!opt.default",opt.default,opt);
+    console.log('opt.axis',opt.axis,opt.axis.length);
     if(opt.default != false){
-      for(var i=0;i<opt.axis.length;i++){
+      for(var i=0;i<opt.data.length;i++){
         series.push(
           {
             data: opt.data[i],
@@ -324,11 +417,11 @@ class Bar {
         }
       },
       grid: {
-        left: '3%',
-        right: '4%',
-        bottom:"5%",
-        height:"86%",
-        containLabel: true
+        top:'15%',
+        left: '5%',
+        containLabel: true,
+        height:'80%',
+        width:'90%',
       },
       yAxis: [{
         type: 'value',
@@ -474,7 +567,7 @@ class FoldLine {
 
 //获取最大值
 function getSeriesItemMax(array) {
-  console.log(array)
+  // console.log(array)
   var res = [];
   array.forEach((item) => {
       item.forEach((i, idx) => {
@@ -519,8 +612,8 @@ class renderMult{
    * @param {*} opt.legend
    * @param {*} opt.stack 是否堆叠
    * @param {*} opt.yAxisMax 用于处理刻度线对齐问题
-   * @param {*} opt.default 不需要设置  使用默认处理方式 设置false 自行处理
-   * @param {*} opt.data  数据
+   * @param {*} opt.default 不需要设置  使用默认处理方式 如果设置false 处理
+   * @param自行处理*} opt.data  数据
    * @returns 
    * 
    * @示例
@@ -536,7 +629,7 @@ class renderMult{
     }
    */
   renderMultiBar(opt){
-    console.log("renderMultiBar",opt.default,opt);
+    // console.log("renderMultiBar",opt.default,opt);
       //存储双轴刻度值
       //存储双轴刻度值
     var y1DataList = [];
@@ -696,6 +789,138 @@ class renderMult{
       series: opt.default!=false && series
     }
   }
+}
+
+class Map{
+  // 区域地图配置  模拟3d
+  renderMap(data) {
+    return {
+      tooltip: {
+        trigger: 'item'
+      },
+      geo: [
+        {
+          map: 'gdmap',
+          show: true,
+          zlevel: 2,
+          top:30,
+          bottom:60,
+          left:40,
+          right:40,
+          label:{
+            show:true,
+            position: 'top',
+            color:"#fff"
+          },
+          itemStyle:{
+            areaColor:"rgba(0,56,100,.2)",
+            borderWidth:1,
+            borderColor:"#6ea3d0",
+            shadowColor: '#1399c0',
+            shadowBlur: 10,
+            
+          },
+          emphasis:{
+            label:{show:true,color:'#fff'},
+            itemStyle:{
+              areaColor:"rgba(0,130,177,.2)",
+              borderColor:"#FFF",
+              shadowColor: 'rgba(255, 255, 255, 0.1)',shadowBlur: 30,opacity:1
+            },
+          }
+        },
+        {
+          map: 'gdmap',
+          show: true,
+          top:30,
+          bottom:60,
+          left:40,
+          right:40,
+          itemStyle:{
+            areaColor:"rgba(0,0,0,0)",
+            borderColor:"#497679",
+            shadowColor: '#497679',
+            shadowBlur: 1,
+            shadowOffsetY: 30,
+          }
+        },
+        {
+          map: 'gdmap',
+          show: true,
+          top:30,
+          bottom:60,
+          left:40,
+          right:40,
+          itemStyle:{
+            areaColor:"rgba(0,0,0,0)",
+            borderColor:"#497679",
+            shadowColor: '#497679',
+            shadowBlur: 1,
+            shadowOffsetY: 15,
+          }
+        }
+      ],
+  
+  
+      series: [{
+        zlevel: 3,
+        type: 'effectScatter',
+        coordinateSystem: 'geo',
+        data: data,
+        symbolSize: 8,
+        showEffectOn: 'render',
+        rippleEffect: {
+          brushType: 'stroke'
+        },
+        itemStyle: {
+          normal: {
+            color: '#FFF',
+            shadowBlur: 10,
+            shadowColor: '#333'
+          }
+        },
+        label: {
+          normal: {
+            color: "#FFF",
+            formatter: '{b}',
+            position: 'bottom',
+            show: true
+          }
+        },
+      }]
+    };
+  }
+}
+
+//高德地图使用  echarts 数据格式化 geoJson  
+var gaodeMapJsonMaker = function (data,cityname) {
+  // 存储当前搜索地区边界点
+  var jsonData = [];
+
+  var arr = data.boundaries;
+
+  for (var j = 0; j < arr.length; j++) {
+    for (var i = 0; i < arr[j].length; i++) {
+      jsonData.push(['' + arr[j][i].lng, '' + arr[j][i].lat]);
+    }
+  }
+
+  // geoJSON格式
+  var result = {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": { "name": cityname },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [jsonData]
+        }
+      }
+    ]
+  };
+
+  return result;
 }
 
 class Gauge {
@@ -859,5 +1084,6 @@ export default {
   Bar,
   FoldLine,
   Gauge,
-  renderMult
+  renderMult,
+  Map
 }

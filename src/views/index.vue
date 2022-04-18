@@ -6,25 +6,25 @@
 
     <div class="container">
       <!--左侧 -->
-      <side-left class="sider-left"></side-left>
+      <Left class="sider-left"></Left>
       <!-- 中间主题 -->
       <Main class="main"></Main>
       <!-- 右侧 -->
-      <side-right class="sider-right"></side-right>
+      <Right class="sider-right"></Right>
     </div>
   </div>
 </template>
 
 <script>
-import Header from '@/views/header/header.vue'
-import sideLeft from '@/views/side/SideLeft.vue'
-import sideRight from '@/views/side/SideRight.vue'
-import Main from '@/views/main/main.vue'
+import Header from './header.vue'
+import Left from './left.vue'
+import Right from './right.vue'
+import Main from './main.vue'
 export default  {
   components:{
     Header,
-    sideLeft,
-    sideRight,
+    Left,
+    Right,
     Main
   },
   created(){
