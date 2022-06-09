@@ -1,11 +1,11 @@
 <template>
   <div class="j-flex-col main">
-    <div style="flex:1;position:relative;">
-      <Map></Map>
+    <div class="first" style="position:relative;">
+      <Map3D></Map3D>
     </div>
 
 
-    <div class="footer bg-box">
+    <div class="second bg-box">
       <Footer></Footer>
     </div> 
     
@@ -15,11 +15,12 @@
 </template>
 
 <script>
-import Map from '@/components/map/map.vue'
-import Footer from '@/views/footer/footer.vue'
+// import Map3D from '@/components/map/gl-3d.vue'
+import Map3D from '@/components/map/gl-region.vue'
+import Footer from '@/views/footer.vue'
 export default  {
   components:{
-    Map,
+    Map3D,
     Footer
   },
   data(){
@@ -39,7 +40,10 @@ export default  {
 <style lang="scss" scoped>
   .main{
     justify-content: space-between;
-    .footer{
+    .first{
+      flex: .7;
+    }
+    .second{
       flex:.27;
     }
   } 

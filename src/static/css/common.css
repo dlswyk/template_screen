@@ -37,51 +37,38 @@ i{margin-right:2px ;}
 
 .j-Liquid-crystal{font-family: 'ds-digitalnormal'}        /*液晶体 */
 
-/* pc端样式 */
-
-/* 滚动条样式 */
-/* 
-1. ::-webkit-scrollbar 滚动条整体部分
-
-2. ::-webkit-scrollbar-thumb 滚动条里面的小方块，能向上向下移动（或向左向右移动）
-
-3. ::-webkit-scrollbar-track 滚动条的轨道（里面装有Thumb）
-
-4. ::-webkit-scrollbar-button 滚动条的轨道的两端按钮，由于通过点击微调小方块的位置。
-
-5. ::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分
-
-6. ::-webkit-scrollbar-corner 边角，即垂直滚动条和水平滚动条相交的地方
-
-7. ::-webkit-resizer 两个滚动条的交汇处上用于拖动调整元素大小的小控件
-*/
-/* 滚动条样式设置 */
-::-webkit-scrollbar {
-  width:0px;
-  height:0px;
-}
-/* ::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 2px;
-  background-color: #1E90FF;
-}  */
-
-
+/* 隐藏高德地图标识 */
+.amap-logo,.amap-copyright{display: none !important;}
 /* 隐藏百度地图标识 */
 .anchorBL{display: none;}
+
+/* 全局滚动条样式重置 */
+::-webkit-scrollbar{width:6px; height:6px}
+::-webkit-scrollbar-thumb{border-radius:1em;background-color:rgba(50,50,50,0.3)}
+::-webkit-scrollbar-thumb:hover{background-color:rgba(50,50,50,0.6)}
+::-webkit-scrollbar-track {border-radius: 1em;background-color:rgba(50,50,50,0.1)}
+::-webkit-scrollbar-track:hover{background-color: rgba(50,50,50,0.2)}
+::selection{background:#444;/* Safari */color:#FFF;text-shadow:1px 1px 0px rgba(0,0,0,0.3)}
+::-moz-selection{background: #444;/* Mozilla */color:#FFF;text-shadow:1px 1px 0px rgba(0,0,0,0.3)}
+
 .flex{display: flex;}
-.flex-between{display: flex;justify-content: space-between;}
-.flex-align{display: flex;align-items: center;}
 .j-flex{display: flex;justify-content: space-between;align-items: center;}
+.j-flex-a{display: flex;align-items: center;}
+.j-flex-b{display: flex;justify-content: space-between;}
 .j-flex-col{display: flex;flex-direction: column;}
 .j-flex-row{ display: flex;display: -webkit-flex;justify-content: space-between;flex-direction: row;flex-wrap: wrap;}
 
 .j-line{width: 100%;height:1px;background-image: linear-gradient(to right,#ccc 0%,#ccc 50%,transparent 50%);background-size: 15px 1px;background-repeat: repeat-x;}
-.j-button{background:#b81d22;border-radius:0.1rem;color:#fff;text-align: center;}
 
-.j-overflow{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+/* 多行垂直居中 */
+.j-v-c{display: flex;flex-direction: column;justify-content: center;align-items: center;}
+
+/* flex布局下 失效 文字超出省略号 单行  和 多行 webkit-line-clamp设置行数*/
+.text-wrap{text-overflow: ellipsis;white-space: normal;word-break: break-all;}
+.text-overflow{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+
+/*flex布局下也能生效 文字超出省略号   */
+.text-overflowMut{display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;overflow: hidden;}
 
 /* 元素充满当前位置盒子 超出隐藏 和 j-flex-col一起使用  用来确定页面显示元素过多出现滚动条的解决方案*/
 .j-percent{width: 100%;height: 100%;}

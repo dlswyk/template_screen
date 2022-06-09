@@ -27,12 +27,6 @@ export default  {
     Right,
     Main
   },
-  created(){
-   
-  },
-  methods:{
-   
-  },
 }
 </script>
 

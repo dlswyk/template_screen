@@ -7,6 +7,9 @@ module.exports =  {
 
   productionSourceMap:process.env.NODE_ENV==='production'?false:true,
 
+   // 是否开启eslint保存检测，有效值：ture | false | 'error'
+   lintOnSave: false,
+
   // 本地跨域配置
   devServer: {
     // 配置跨域代理

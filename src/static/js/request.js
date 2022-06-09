@@ -2,7 +2,7 @@
  * 请求拦截、相应拦截、错误统一处理
  */
  import axios from 'axios';
- import F from "@common/js/config.js";
+ import F from "./config";
  
 
  // 环境的切换

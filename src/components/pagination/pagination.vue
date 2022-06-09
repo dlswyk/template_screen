@@ -5,7 +5,7 @@
       暂无数据
     </div>
     
-    <div class="flex-align" v-if="total != 0">
+    <div class="j-flex-a" v-if="total != 0">
       <!-- total 总数 -->
       <div class="total">共{{total}}条</div>
 
@@ -14,7 +14,7 @@
       <!--computed同个页面    共用同一个组件  用来清空每次切换后  当页码为父组件穿过来的值-->
       <div style="display:none;">{{currentPages}}</div>
 
-      <ul class="flex-align">
+      <ul class="j-flex-a">
         <li :class="{'active':currentPage_==index+1}" v-for="(item,index) in pageList" :key="index" @click="currentPage_ = index+1" >{{index+1}}</li>
       </ul>
 
@@ -126,7 +126,7 @@ export default {
   
   .ban{pointer-events:none}
 
-  .flex-align{
+  .j-flex-a{
     display:flex;
     align-items:center;
   }

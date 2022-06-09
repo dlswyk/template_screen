@@ -1,6 +1,8 @@
 <template>
   <div class="header">
+    <p class="time">{{date.days}} {{date.time}}</p>
     <div class="title">大屏名称</div>
+    <img class="full" src="@/assets/images/fullscreen.png" alt="" @click="$fullScreen">
   </div>
 </template>
 
@@ -8,21 +10,64 @@
 export default  {
   data () {
     return {
+      date:{
+        days:"",
+
+        week:"",
+
+        time:""
+      }
     };
   },
 
   created(){
-    this.loadImg();
+    // this.formatDate()
   },
 
   methods: {
-    loadImg(){
-      this.show = true;
-    }
+    formatDate () {
+      this.timeOut=setTimeout(()=>{
+        const date = new Date()
+        const year = date.getFullYear() // 年
+        const month = date.getMonth() + 1 // 月
+        const day = date.getDate() // 日
+        const week = date.getDay() // 星期
+        const weekArr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+        let hour = date.getHours() // 时
+        hour = hour < 10 ? '0' + hour : hour // 如果只有一位，则前面补零
+        let minute = date.getMinutes() // 分
+        minute = minute < 10 ? '0' + minute : minute // 如果只有一位，则前面补零
+        let second = date.getSeconds() // 秒
+        second = second < 10 ? '0' + second : second // 如果只有一位，则前面补零
+        this.date.days = `${year}年${month}月${day}日`
+        this.date.week = `${weekArr[week]}`
+        this.date.time = `${hour}:${minute}:${second}`
+        this.formatDate();
+      },1000)
+    },
+
+    beforeDestroy () {
+      if (this.formatDate) {
+        clearTimeout(this.formatDate) // 在Vue实例销毁前，清除时间定时器
+      }
+    },
+    
   }
 }
 </script>
 <style lang='scss' scoped>
+  .time{
+    position: absolute;
+    left: 100px;
+    top: 20px;
+    color: #fff;
+  }
+  .full{
+    position: absolute;
+    right: 100px;
+    top:16px;
+    cursor: pointer;
+  }
   .header{
     position:relative;
     width: 100%;

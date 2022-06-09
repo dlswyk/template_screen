@@ -8,7 +8,10 @@ export default  {
     vdata:{
       type:Object,
       default:()=>{
-        return {}
+        return {
+          axis:['Mon', 'Tue', 'Wed', 'Thu'],
+          data:[83,66,57,46]
+        }
       }
     },
 

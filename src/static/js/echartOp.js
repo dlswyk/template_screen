@@ -1,6 +1,7 @@
 import * as echarts from 'echarts';
 
 function isNaN_(params){
+  console.log(params);
   return isNaN(params)?0:params
 }
 class Basis {
@@ -368,9 +369,8 @@ class Bar {
 
   renderMultiBar(opt){
     var series = [];
-    console.log('opt.axis',opt.axis,opt.axis.length);
     if(opt.default != false){
-      for(var i=0;i<opt.data.length;i++){
+      for(var i=0;i<opt.legend.length;i++){
         series.push(
           {
             data: opt.data[i],
@@ -388,6 +388,7 @@ class Bar {
         )
       }
     }
+
     return{
       tooltip: {
         trigger: 'axis',
@@ -887,6 +888,113 @@ class Map{
             show: true
           }
         },
+      }]
+    };
+  }
+
+  
+  renderMap3D(opt){
+    return {
+      tooltip: {
+        trigger: 'item',
+        formatter:'{b0}',
+        textStyle:{
+          color:"#5e92f6"
+        }
+      },
+      geo3D:{
+        type: "map3D", 
+        map: 'gdmap',
+        
+        regions:[{
+          name:"xxx",
+          label:{
+            show:true,
+            distance: 20,
+            color:"#fff"
+          },
+        }],
+
+        // zlevel:'-30',
+        
+        // 设置3D地图材质
+        shading:'color',
+        colorMaterial:{
+          detailTexture:opt.img,
+          textureTiling:1
+        },
+
+        // 使用后导致3d散点移入事件失效  因此使用silent 或者 regions
+        label:{
+          show:true,
+          distance: 20,
+          // 注意这里  不能用 {a} 模式或者 直接return param.name 获取不到  原因未知
+          formatter(param) {
+            return `{a|${param.name}}`;
+          },
+          rich: {
+            a:{
+              color: '#fff',
+            },
+          },
+        },
+        silent:true,
+        itemStyle: { 
+          borderWidth: 1,
+          borderColor: 'rgba(57, 132, 138,.5)',
+        },
+        emphasis:{
+          label:{show:true,color:'#fff',distance: 20},
+          itemStyle:{
+            color:"#fff",
+            borderColor:"#FFF"
+          },
+        },
+        viewControl: {
+          alpha: 40,
+          // beta: 160,
+          targetCoord: [116.46, 39.92],
+          autoRotate: true,
+          autoRotateAfterStill: 3,
+          distance: 120,
+          maxAlpha:360,
+          // 设置大一点防止转一圈就停止
+          maxBeta:360000,
+          autoRotateSpeed:2
+        },
+      },
+      series: [{
+        type: "scatter3D",
+        coordinateSystem: "geo3D",
+        zlevel:'30',
+        //自定义 注意 当时暂时不支持图片模式
+        symbol:"circle",
+
+        symbolSize: [40, 30],
+
+        emphasis: {
+          label: {
+            show: true,
+            position: 'top',
+            distance: 0,
+            formatter(params) {
+              return `{a|${params.name}}`;
+            },
+            rich: {
+              a: {
+                backgroundColor:'#fff',
+                borderWidth:0,
+                color:"#5e92f6",
+                borderRadius:5,
+                fontSize:20,
+                padding:[10,15],
+              },
+            },
+            textStyle: {
+              color: '#ffffff',
+            },
+          },
+        }
       }]
     };
   }
