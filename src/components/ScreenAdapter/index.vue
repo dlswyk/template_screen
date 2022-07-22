@@ -58,8 +58,8 @@ export default {
       const doc =  document.documentElement;
       const w = doc.clientWidth / this.width
       const h = doc.clientHeight / this.height
-      console.log('doc.clientWidth',doc.clientWidth,this.width,w);
-      console.log('w < h ? w : h',w,h,Math.min(w,h),Math.max(w,h));
+      // console.log('doc.clientWidth',doc.clientWidth,this.width,w);
+      // console.log('w < h ? w : h',w,h,Math.min(w,h),Math.max(w,h));
       // return w < h ? w : h
       return doc.clientWidth < this.width?Math.min(w,h):Math.max(w,h);
     },

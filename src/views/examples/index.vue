@@ -1,7 +1,7 @@
 <template>
   <div class='j-full-curbox map'>
     <div class="examples">
-      <p :class="{active:item == com}" v-for='(item,index) in cmps' :key='index' style="color:#000;" @click="change(item)">{{item}}</p>
+      <p :class="{active:item == com}" v-for='(item,index) in cmps' :key='index' @click="change(item)">{{item}}</p>
     </div>
     
     <div class="echart">
@@ -21,10 +21,11 @@ const filterCmps = ['index'];
 requireComponent.keys().forEach(fileName => {
   // 组件内容
   const cmp = requireComponent(fileName).default;
+
   // 以文件名作为名称
   let cmp_ = fileName.slice(2,-4);
 
-  !filterCmps.includes(fileName) && (cmps[cmp_] = cmp)
+  !filterCmps.includes(cmp_) && (cmps[cmp_] = cmp)
 })
 
 export default {
@@ -56,7 +57,7 @@ export default {
 </script>
 <style lang='scss' scoped>
   .map{
-    background-color: #ddd;
+    background: linear-gradient(180deg, rgba(110, 181, 223, 0.2) 0%, rgba(132, 219, 235, 0.2) 100%);
     .examples{
       padding-top: 50px;
       width: 800px;
@@ -70,11 +71,9 @@ export default {
         padding: 5px 10px;
         border-radius: 40px;
         text-align: center;
-        background-color: #7ce6ff;
-        -webkit-box-shadow: 0 0 4px #7ce6ff inset;
-        box-shadow: 0 0 4px #7ce6ff inset;
-        -webkit-box-sizing: border-box;
+        background-color: #fff;
         box-sizing: border-box;
+        color: #f33;
         &.active{
           color: #fff;
           background-color: #f33;
@@ -86,7 +85,7 @@ export default {
       width: 800px;
       height: 600px;
       margin:20px auto;
-      background: rgba(100,100,100,.4);
+      box-shadow: 0 0 2px #fff;
     }
   }
 </style>

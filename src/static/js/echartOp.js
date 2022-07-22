@@ -5,20 +5,28 @@ function isNaN_(params){
   return isNaN(params)?0:params
 }
 class Basis {
+  static MYCHAT = {};
+
   // 全局主色调
   static color = ['#60D7A7', '#2060ED', '#F9CB34',  '#6242FB', '#1041AA'];
   
   // echarts 初始化及配置 记忆动态适应
   static render(current, option) {
-    let myChart = echarts.init(current);
+    // 是否已经创建过了
+    let hasCreatEchart = echarts.getInstanceByDom(current);
+    let myChart = null;
     
-    // 如果已经使用了transform：scale（）去缩小整体比例  不需要在监听重新渲染，同时也为了解决keep-alive下，页面大小改变，重新切换页面渲染问题
-    // window.addEventListener('resize', () => {
-    //   myChart.resize();
-    // });
+    //是否已创建过了  解决vue通过监听多次初始化问题
+    if(!hasCreatEchart){
+      myChart = echarts.init(current);
+      this.MYCHAT[myChart.id] = myChart
+    }else{
+      myChart = this.MYCHAT[hasCreatEchart.id];
+      delete this.MYCHAT[hasCreatEchart.id];
+    }
 
     myChart.setOption(option)
-    
+      
     return myChart;
   }
 
@@ -63,9 +71,7 @@ class Basis {
         }
       ]
     }
-    
   }
-
 }
 
 class Pie {
@@ -77,10 +83,9 @@ class Pie {
    * 
    * @示例
    * opt:{
-      title:"饼图" ,
       data:[
         { value: 1048, name: '部门任务数量' },
-        { value: 1048, name: '部门任务数量' },
+        { value: 1048, name: '11361361' },
       ],
     },
    */
@@ -536,29 +541,17 @@ class FoldLine {
           color: '#29a675',
           // 区域面积
           areaStyle: {
-            // 填充颜色
-            color: new echarts.graphic.LinearGradient(0,1,0,0,[
-              {
+            normal: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 offset: 0,
-                color: '#5E92F6',
-                opacity: .1
-              },
-              // {
-              //   offset: .25,
-              //   color: '#5E92F6',
-              //   opacity: .8
-              // },
-              {
-                offset: 1,
-                color: '#29a675'
-              }
-            ]),
-            // 阴影
-            shadowBlur: 10,
-            shadowColor: '#5E92F6',
-            shadowOffsetX: 10,
-            shadowOffsetY: 10,
-            opacity: .8
+                color: 'rgba(67,155,253, 0.8)'
+              }, {
+                offset: 0.2,
+                color: 'rgba(67,155,253, 0)'
+              }], false),
+              shadowColor: 'rgba(0, 0, 0, 0.2)',
+              shadowBlur: 10
+            }
           }
         }
       ]
@@ -606,6 +599,7 @@ function yAxisMax(maxValue,it=20) {
 
 
 // 堆叠  柱状图折线图组合 
+// 堆叠  柱状图折线图组合 
 class renderMult{
   /**
    * @param {*} opt 
@@ -622,10 +616,10 @@ class renderMult{
       axis:['Mon', 'Tue', 'Wed', 'Thu',"Tht"],
       legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
       data:[
-        {"title": "Forest",yAxisIndex:1,type:'line',"value":[320, 332, 301, 334, 390]},
         {"title": "Steppe",yAxisIndex:0,"value":[220, 182, 191, 234, 290]},
         {"title": "Desert",yAxisIndex:0,"value":[150, 232, 201, 154, 190]},
         {"title": "Wetland",yAxisIndex:0,"value":[98, 77, 101, 99, 40]},
+        {"title": "Forest",yAxisIndex:1,type:'line',"value":[320, 332, 301, 334, 390]},
       ],
     }
    */

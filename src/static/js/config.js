@@ -38,25 +38,6 @@ export default {
     }, bool ? bool : 2000)
   },
 
-  //保留小数点后两位
-  fomatFloat:function(x,pos){   
-    var f = parseFloat(x);
-    if(isNaN(f)){
-      return false;
-    }   
-    f = Math.round(x*Math.pow(10, pos))/Math.pow(10, pos); // pow 幂   
-    var s = f.toString();
-    var rs = s.indexOf('.');
-    if(rs < 0){
-        rs = s.length;
-        s += '.'; 
-    }
-    while(s.length <= rs + pos){
-      s += '0';
-    }
-    return s;
-  },
-
   //地址参数 对象合成
   httprequestquery(list){
     let params = [];
@@ -78,20 +59,6 @@ export default {
       params.push(i + "=" + item);
     }
     return params.length>0 ? '?' + params.join("&") : '';
-  },
-
-
-  //检测是微信还是支付宝 0:普通 1:微信 2:支付宝 3:浙里办
-  checkBrowser: function () {
-    if (/MicroMessenger/.test(window.navigator.userAgent)) {
-      return 1;
-    } else if (/AlipayClient/.test(window.navigator.userAgent)) {
-      return 2;
-    } else if (/ZLB/.test(window.navigator.userAgent)) {
-      return 3;
-    } else {
-      return 0;
-    }
   },
 
   getParams: function (search) {
@@ -116,88 +83,77 @@ export default {
     return r;
   },
 
+
   /**
-   * 根据身份证号码获取性别，性别是根据身份证的倒数第二位来判断的，奇数为男，偶数为女
-   *
-   * @export
-   * @param {*} idCard
-   * @returns
-  */
-  getSexFromIdCard:function(idCard) {
-    let sex = "";
-    if (parseInt(idCard.slice(-2, -1) % 2) == 1) {
-      sex = "male";
-    } else {
-      sex = "female";
-    }
-    return sex;
+   * @param {*} num 需要转换金额
+   * @param {*} type 0：元  1：万元  2:亿元 以此类推
+   * @param {*} fixed 保留小数
+   * @returns 
+   */
+  unitConvert:function(num,type=1,fixed=2) {
+    var dividend = Math.pow(10000,type)
+    var curNum = num;
+    //转换金额位数
+    curNum = curNum / dividend 
+    return curNum.toFixed(fixed);
   },
 
-
-  /**
-   * 根据出生年月日获取年龄
-   *
-   * @export
-   * @param {*} birthday
-   * @returns
+  /** 字符串替换****
+   * @param {*} str 目标字符串
+   * @returns case 2 3用于脱敏姓名   11 手机号  18身份证
    */
-  getAgeFromBirthday:function(birthday) {
-    let birthDate = new Date(birthday)
-    let nowDateTime = new Date()
-    let age = nowDateTime.getFullYear() - birthDate.getFullYear()
-    if (nowDateTime.getMonth() < birthDate.getMonth() ||
-      (nowDateTime.getMonth() == birthDate.getMonth() &&
-        nowDateTime.getDate() < birthDate.getDate())) {
-      age--
+  strReplace:function (str){
+    var len = str.length;
+    // console.log('str',len);
+    var aim = '';
+    switch(len){
+      case 2:
+        aim = str.replace(/.*(?=[\u4e00-\u9fa5])/,  "*");
+        break;
+      case 3:
+        aim = str.replace(/(?<=[\u4e00-\u9fa5]).*(?=[\u4e00-\u9fa5])/,  "*");
+        break;
+      case 11:
+        aim = str.replace(/^(.{3})(?:\d+)(.{2})$/,  "\$1****\$2");
+        break;
+      case 18:
+        aim = str.replace(/^(.{3})(?:\d+)(.{4})$/,  "\$1******\$2");
+        break;
+      default:
+        aim = str;
     }
-    return age
+    return aim;
   },
 
   /**
-   * 根据身份证号码获取出生年月日
-   *
-   * @export
-   * @param {*} idCard
-   * @returns
+   * @param {*} num 获取前几个月
+   * @param {*} boolean 是否包含当前月
+   * @returns 
    */
-  getBirthdayFromIdCard:function (idCard) {
-    let birthday = "";
-    if (idCard != null && idCard != "") {
-      if (idCard.length == 15) {
-        birthday = "19" + idCard.substr(6, 6);
-      } else if (idCard.length == 18) {
-        birthday = idCard.substr(6, 8);
+  getMonthList:function(num,boolean=true) {
+    var curMon = new Date().getMonth()+1+(boolean?1:0);
+
+    num = num?num:12;
+
+    var numLimit = 12;
+    var data = [];
+    if(num < curMon){
+      for(let i=curMon-num;i<curMon;i++){
+        data.push(i+"月")
       }
-      birthday = birthday.replace(/(.{4})(.{2})/, "$1-$2-");
+    }else{
+      for(let j=numLimit-num+curMon;j<13;j++){
+        data.push(j+"月")
+      }
+      for(let j=1;j<curMon;j++){
+        data.push(j+"月")
+      }
     }
-    return birthday;
+
+    return data;
   }
+
 }
-
-// !(function (doc, win) {
-//   // 建立在html和body设置height设置100%的情况下
-
-//   var docEle = doc.documentElement,
-//       evt = 'resize', 
-//       width=1920,
-//       height=1080,
-//       fn = function () {
-//         let scale; //缩小比例
-      
-//         let scaleX = docEle.clientWidth / width;
-//         let scaleY = docEle.clientHeight / height;
-//         // 如果屏幕比例小于width的按照小的比例来缩放
-//         scale = docEle.clientWidth<width?Math.min(scaleX,scaleY):Math.max(scaleX,scaleY);
-
-//         let str = `width:${width}px;height:${height}px;font-size:${width / 19.2}px;transform:scale(${scale});transform-origin: left top;overflow:${docEle.clientWidth<width?'hidden':'auto'}`
-        
-//         // 动态设置全局html元素样式   font-size 100px 
-//         docEle.style.cssText =str;
-//       };
-//     fn();
-//     win.addEventListener(evt, fn, false);
-// }(document, window));
-
 
 Date.prototype.format = function (fmt) { //author: meizz 
   var cNumber = ["日", "一", "二", "三", "四", "五", "六"];

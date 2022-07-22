@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <ScreenAdapter>
-      <video src="@/static/video/bg.mp4?v=1.0.0" autoplay="autoplay" loop="loop" muted="muted" width="100%" height="100%" class="bg_video"></video>
+      <video  loop muted width="100%" height="100%" autoplay  class="bg_video" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x5-video-player-type="h5">
+        <source src="@/static/video/bg.mp4" type="video/mp4">
+      </video>
       <router-view/>
     </ScreenAdapter>
     
@@ -24,18 +26,11 @@ export default{
   
   #app{width: 100%;height: 100%;background:rgba(221,221,221,.2);}
 
-  .bg_video{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  // 注意使用视频作为背景图在平板上可能有问题
+  .bg_video{position: absolute;left: 0;top: 0;width: 100%;height: 100%;object-fit: cover;}
 
-  
   /* 每块渐变色 */
-  .bg-box{padding: 30px 25px 10px;box-sizing: border-box; background: linear-gradient(180deg, rgba(223, 10, 10, 0.2) 0%, rgba(226, 14, 28, 0.2) 100%);}
+  .bg-box{padding: 30px 25px 10px;box-sizing: border-box; background: linear-gradient(180deg, rgba(110, 181, 223, 0.2) 0%, rgba(132, 219, 235, 0.2) 100%);}
 
   /* 每块颜色标题 */
   .title{font-size: 20px;font-family: Songti SC;font-weight: 900;;background: linear-gradient(180deg, #CCD9E1 39.4287109375%, #5DABCE 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}

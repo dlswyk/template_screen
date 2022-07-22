@@ -1,43 +1,27 @@
 /**axios封装
  * 请求拦截、相应拦截、错误统一处理
  */
- import axios from 'axios';
- import F from "./config";
+import axios from 'axios';
+import F from "./config";
  
+// 环境的切换
+axios.defaults.baseURL = process.env.VUE_APP_URL;
 
- // 环境的切换
-if (process.env.NODE_ENV == 'dev') {
-  axios.defaults.baseURL = 'api/';
-} else {
-  axios.defaults.baseURL = process.env.VUE_APP_URL;
-}
- 
- 
- // 请求超时时间
- axios.defaults.timeout = 10000;
- //设置cross跨域 并设置访问权限 允许跨域携带cookie信息
- axios.defaults.withCredentials=true;
- 
- // post请求头
- axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
- 
- // axios.defaults.headers['Referer'] = baseUrl;
-  
-  
-  
+// 请求超时时间
+axios.defaults.timeout = 10000;
+//设置cross跨域 并设置访问权限 允许跨域携带cookie信息
+axios.defaults.withCredentials=true;
+
+// post请求头
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+
  // loading加载动画第一次
  var count = 0;
  // 请求拦截器
  axios.interceptors.request.use(
-  
    config => {
      // alert(++count);
      ++count==1?F.loading():"";
-     // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
-     // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
-     // const token = store.state.token;
-     // token && (config.headers.Authorization = token);
-     // console.log("请求拦截之前config",config.headers);
      return config;
    },
    error => {
@@ -61,11 +45,6 @@ if (process.env.NODE_ENV == 'dev') {
    // 服务器状态码不是200的情况    
    error => {
      --count==0?F.loading(false):"";
-     // console.log("响应拦截error",error);
-     // if(!error.response || error.response == undefined){
-     //   location.href = "/main/index.html#/error";
-     //   return;
-     // }
      if (error.response) {
        switch (error.response.status) {
          // 401: 未登录                             
@@ -88,95 +67,62 @@ if (process.env.NODE_ENV == 'dev') {
    }
  );
   
- //错误统一处理
- function handle(res){
- 
-   F.tip(res.msg?res.msg:"请稍后再试");
- }
- /** 
+//错误统一处理
+function handle(res){
+  F.tip(res.msg?res.msg:"请稍后再试");
+}
+
+/** 
  * get方法，对应get请求 
  * @param {String} url [请求的url地址] 
  * @param {Object} params [请求时携带的参数] 
  * @param {Object} opt 用于自定义处理配置
  */
- export function get(url,params,opt={}) {
-   F.loading(false);
-   F.loading();
-   return new Promise((resolve, reject) => {
- 
-     axios.get(url,{params: params})
-       .then(res => {
-         F.loading(false);
-   
-         if(res.data.code == "200" || opt.back){
-           resolve(res.data);
-         }else{
-           handle(res.data)
-         }
-       })
-       .catch(err => {
-         console.log("err",err);
-         F.loading(false);
-         reject(err)
-       })
-   });
- }
- /** 
+export function get(url,params,opt={}) {
+  F.loading(false);
+  F.loading();
+  return new Promise((resolve, reject) => {
+    axios.get(url,{params: params})
+      .then(res => {
+        F.loading(false);
+        if(res.data.code == "200" || opt.back){
+          resolve(res.data);
+        }else{
+          handle(res.data)
+        }
+      })
+      .catch(err => {
+        F.loading(false);
+        reject(err)
+      })
+  });
+}
+/** 
  * post方法，对应post请求 
  * @param {String} url [请求的url地址] 
  * @param {Object} params [请求时携带的参数] 
  * @param {Object} opt 用于自定义处理配置
  */
- export function post(url, params,opt={}) {
-   F.loading(false);
-   F.loading();
- 
-   return new Promise((resolve, reject) => {
-     
-     axios.post(url, params)
-       .then(res => {
- 
-         F.loading(false);
- 
-         if(res.data.code == "200" || opt.back){
-           resolve(res.data);
-         }else{
-           handle(res.data)
-         }
-       })
-       .catch(err => {
-         F.loading(false);
-         reject(err)
-       })
-   });
- }
- 
- /** 
- * postmult方法，对应post请求  提交图片
- * @param {String} url [请求的url地址] 
- * @param {Object} params [请求时携带的参数] 
- */
- export function postmult(url, params,opt={},headers) {
-   F.loading(false);
-   F.loading();
- 
-   return new Promise((resolve, reject) => {
-     
-     axios.post(url, params,headers)
-       .then(res => {
- 
-         F.loading(false);
- 
-         if(res.data.code == "200" || opt.back){
-           resolve(res.data);
-         }else{
-           handle(res.data)
-         }
-       })
-       .catch(err => {
-         F.loading(false);
-         reject(err.data)
-       })
-   });
- }
-  
+export function post(url, params,opt={}) {
+  F.loading(false);
+  F.loading();
+
+  return new Promise((resolve, reject) => {
+    
+    axios.post(url, params)
+      .then(res => {
+
+        F.loading(false);
+
+        if(res.data.code == "200" || opt.back){
+          resolve(res.data);
+        }else{
+          handle(res.data)
+        }
+      })
+      .catch(err => {
+        F.loading(false);
+        reject(err)
+      })
+  });
+}

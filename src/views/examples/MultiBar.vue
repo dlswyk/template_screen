@@ -8,7 +8,17 @@ export default  {
     vdata:{
       type:Object,
       default:()=>{
-        return {}
+        return {
+          axis:['Mon', 'Tue', 'Wed', 'Thu'],
+          stack:true,
+          legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
+          data:[
+            [320, 332, 301, 334, 390],
+            [220, 182, 191, 234, 290],
+            [150, 232, 201, 154, 190],
+            [98, 77, 101, 99, 40]
+          ],
+        }
       }
     },
 

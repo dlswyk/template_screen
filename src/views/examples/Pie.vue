@@ -7,7 +7,15 @@ export default  {
   props:{
     vdata:{
       type:Object,
-      default:()=>{}
+      default:()=>{
+        return{
+          
+          data:[
+            { value: 1048, name: '部门任务数量' },
+            { value: 1048, name: '464' },
+          ],
+        }
+      }
     },
 
     color:{

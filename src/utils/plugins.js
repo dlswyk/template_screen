@@ -1,5 +1,8 @@
 import Vue from 'vue'
 
+import Element from 'element-ui'
+Vue.use(Element)
+
 // echart基础配置
 import * as echarts from 'echarts';
 import echartsOp from  "@/static/js/echartOp.js";
@@ -8,25 +11,13 @@ import echartsGL from 'echarts-gl' // 引入echarts
 // 全屏
 import fullScreen from  "@/utils/fullScreen.js";
 
-
-import config from "@/static/js/config.js";
-import {get,post,postmult} from "@/static/js/request.js";
-import api from "@/utils/api.js";
-
 // echart  配置
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$mychar =  echartsOp;
 Vue.prototype.$echartsGL = echartsGL // 引入组件（将echarts注册为全局）
 Vue.prototype.$fullScreen =  fullScreen;
-Vue.prototype.$config = config;
 
-// 请求方式
-Vue.prototype.$get = get;
-Vue.prototype.$post = post;
-Vue.prototype.$postmult = postmult;
 
-// 接口文件
-Vue.prototype.$api = api;
 
 
 // 自动注册组件

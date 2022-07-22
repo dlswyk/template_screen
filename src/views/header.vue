@@ -2,6 +2,7 @@
   <div class="header">
     <p class="time">{{date.days}} {{date.time}}</p>
     <div class="title">大屏名称</div>
+    <el-button class="examples" type="primary" @click="skip">栗子</el-button>
     <img class="full" src="@/assets/images/fullscreen.png" alt="" @click="$fullScreen">
   </div>
 </template>
@@ -46,16 +47,24 @@ export default  {
       },1000)
     },
 
-    beforeDestroy () {
-      if (this.formatDate) {
-        clearTimeout(this.formatDate) // 在Vue实例销毁前，清除时间定时器
-      }
-    },
-    
-  }
+    skip(){
+      this.$router.push({path:'/examples'})
+    }
+  },
+
+  beforeDestroy () {
+    if (this.formatDate) {
+      clearTimeout(this.formatDate) // 在Vue实例销毁前，清除时间定时器
+    }
+  },
 }
 </script>
 <style lang='scss' scoped>
+  .examples{
+    position: absolute;
+    right: 200px;
+    top: 20px;
+  }
   .time{
     position: absolute;
     left: 100px;
@@ -68,6 +77,7 @@ export default  {
     top:16px;
     cursor: pointer;
   }
+  
   .header{
     position:relative;
     width: 100%;
