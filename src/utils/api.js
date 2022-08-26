@@ -1,18 +1,9 @@
+import {request} from "@/static/js/request.js";
 export default {
-  // 代理
-  baseUrl:'api/',
-
-  // 左侧图接口
-  left:{
+  // 上传接口
+  common:{
+    // 上传组件
+    upload(data){return request({url:'',method:'post',data,headers: {'Content-Type': 'multipart/form-data'}})},
   },
-  
-  // 中间接口
-  main:{
-  },
-  
-  // 右侧接口
-  right:{
-
-  }
   
 }
