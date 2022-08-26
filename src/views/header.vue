@@ -2,7 +2,7 @@
   <div class="header">
     <p class="time">{{date.days}} {{date.time}}</p>
     <div class="title">大屏名称</div>
-    <el-button class="examples" type="primary" @click="skip">栗子</el-button>
+    <button class="el-button el-button-primary examples" type="primary" @click="skip">栗子</button>
     <img class="full" src="@/assets/images/fullscreen.png" alt="" @click="$fullScreen">
   </div>
 </template>

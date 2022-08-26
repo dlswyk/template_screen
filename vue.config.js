@@ -25,4 +25,13 @@ module.exports =  {
     }
   },
 
+  // 配置全局通用自定义scss变量
+  css:{
+    loaderOptions:{
+      sass:{
+        prependData:'@import "~@/assets/scss/common.scss";'
+      }
+    }
+  },
+
 }

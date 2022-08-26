@@ -57,11 +57,9 @@ i{margin-right:2px ;}
 .j-flex-b{display: flex;justify-content: space-between;}
 .j-flex-col{display: flex;flex-direction: column;}
 .j-flex-row{ display: flex;display: -webkit-flex;justify-content: space-between;flex-direction: row;flex-wrap: wrap;}
-
-.j-line{width: 100%;height:1px;background-image: linear-gradient(to right,#ccc 0%,#ccc 50%,transparent 50%);background-size: 15px 1px;background-repeat: repeat-x;}
-
 /* 多行垂直居中 */
 .j-v-c{display: flex;flex-direction: column;justify-content: center;align-items: center;}
+
 
 /* flex布局下 失效 文字超出省略号 单行  和 多行 webkit-line-clamp设置行数*/
 .text-wrap{text-overflow: ellipsis;white-space: normal;word-break: break-all;}
@@ -70,11 +68,13 @@ i{margin-right:2px ;}
 /*flex布局下也能生效 文字超出省略号   */
 .text-overflowMut{display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;overflow: hidden;}
 
-/* 元素充满当前位置盒子 超出隐藏 和 j-flex-col一起使用  用来确定页面显示元素过多出现滚动条的解决方案*/
-.j-percent{width: 100%;height: 100%;}
-
+.j-vh{width: 100vw;height: 100vh;box-sizing: border-box;overflow: auto;}
 .j-full-curbox{position:absolute;top:0;left:0;right:0;bottom:0;margin:0;overflow:auto;}
 .j-full-center{position: absolute;top:50%;left: 50%;transform: translate(-50%,-50%);}
+
+/* 图片与背景cover */
+.j-img-fit{object-fit:cover}
+.j-bg-fit{background-repeat: no-repeat;background-position:center;background-size: cover;}
 
 /* button */
 .el-button{padding:6px 10px;line-height:1;font-weight: 500;font-size: 14px;box-sizing: border-box;color:#515a6e;background: #fff;outline: none;border:1px solid #dcdfe6;border-radius: 4px;white-space: nowrap;cursor: pointer;transition: .1s;}
@@ -154,16 +154,16 @@ i{margin-right:2px ;}
 
 
 /* 字体 */
-.font12 { font-size: .12rem;}
-.font14 { font-size: .14rem;}
-.font16 { font-size: .16rem;}
-.font18 { font-size: .18rem;}
-.font20 { font-size: .20rem;}
-.font22 { font-size: .22rem;}
-.font24 { font-size: .24rem;}
-.font26 { font-size: .26rem;}
-.font28 { font-size: .28rem;}
-.font30 { font-size: .30rem;}
+.font12 { font-size: 12px;}
+.font14 { font-size: 14px;}
+.font16 { font-size: 16px;}
+.font18 { font-size: 18px;}
+.font20 { font-size: 20px;}
+.font22 { font-size: 22px;}
+.font24 { font-size: 24px;}
+.font26 { font-size: 26px;}
+.font28 { font-size: 28px;}
+.font30 { font-size: 30px;}
 
 
 /* 加载动画css */

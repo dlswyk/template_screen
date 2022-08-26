@@ -1,25 +1,8 @@
 <template>
-  <div class="chart-box" v-loading='loading'>
-    <div class="chart" id="MapGd" ref="column_con"></div>
-
-    <div class="chart-select">
-      <el-input placeholder="请输入内容" v-model="data.orgName" class="input-with-select" clearable>
-        <div slot="prepend" style="cursor:pointer;" @click="chartBox = !chartBox">安吉县<i class='el-icon-caret-bottom' :class="[chartBox?'icontTranform':'']"></i></div>
-        <el-button slot="append" class="el-button-success" icon="el-icon-search" @click="getMapStreeInfo(true)"></el-button>
-      </el-input>
-
-      <div class="chart-select-box" v-if="chartBox">
-        <div class="column" :class="{'active':item.facilityTypeName == data.facilityTypeName}" v-for="(item,index) in mapFacility" :key="index" @click="changeFacility(item)">
-          {{item.facilityTypeName}} ({{item.total}})
-        </div>
-      </div>
-    </div>
-    
-  </div>
+  <div class="chart" id="MapGd" ref="column_con"></div>
 </template>
 
 <script>
-// import * as $mMechanism from '@/api/screen/mMechanism.js'
 export default {
   data () {
     return {
@@ -228,61 +211,8 @@ export default {
 </script>
 
 <style lang='scss'>
-.chart-box{
-  position:relative;
-  width:100%;
-  height:100%;
-  .chart-select{
-    position: absolute;
-    top: 20px;
-    right: 60px;
-    .el-input__inner{
-      width: 300px;
-    }
-    button{
-      background-color:#0a87fb;
-      color: #fff;
-      border-radius: 0 5px 5px 0;
-      &:hover {color: #fff;border-color: #54a1e9;background-color: #54a1e9;}
-    }
-
-    .el-icon-caret-bottom{
-      transition: all .3s;
-    }
-    .icontTranform{
-      transform: rotate(180deg);
-    }
-
-    .chart-select-box{
-      position: absolute;
-      top: 40px;
-      width: 100%;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      min-height: 80px;
-      padding: 15px 15px 0;
-      .column{
-        float: left;
-        width: 48%;
-        box-sizing: border-box;
-        background-color: #ddd;
-        color: #5a5a5a;
-        padding: 10px 2px;
-        cursor: pointer;
-        border-radius: 2px;
-        margin-bottom: 10px;
-        &:nth-child(2n){
-          float:right;
-        }
-        &.active{
-          background-color: #54a1e9;
-          color: #fff;
-        }
-      }
-    }
-  }
-}
 .chart{
+  position:relative;
   width: 100%;
   height: 100%;
   

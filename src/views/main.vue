@@ -15,8 +15,8 @@
 </template>
 
 <script>
-// import Map3D from '@/components/map/gl-3d.vue'
-import Map3D from '@/components/map/gl-region.vue'
+import Map3D from '@/components/map/gl-3d.vue'
+// import Map3D from '@/components/map/gl-region.vue'
 import Footer from '@/views/footer.vue'
 export default  {
   components:{

@@ -10,21 +10,29 @@ class Basis {
   // 全局主色调
   static color = ['#60D7A7', '#2060ED', '#F9CB34',  '#6242FB', '#1041AA'];
   
-  // echarts 初始化及配置 记忆动态适应
-  static render(current, option) {
-    // 是否已经创建过了
-    let hasCreatEchart = echarts.getInstanceByDom(current);
-    let myChart = null;
+  // echarts 初始化及配置 解决了控制台警告问题
+  // static render(current, option) {
+  //   // 是否已经创建过了
+  //   let hasCreatEchart = echarts.getInstanceByDom(current);
+  //   let myChart = null;
     
-    //是否已创建过了  解决vue通过监听多次初始化问题
-    if(!hasCreatEchart){
-      myChart = echarts.init(current);
-      this.MYCHAT[myChart.id] = myChart
-    }else{
-      myChart = this.MYCHAT[hasCreatEchart.id];
-      delete this.MYCHAT[hasCreatEchart.id];
-    }
+  //   //是否已创建过了  解决vue通过监听多次初始化问题
+  //   if(!hasCreatEchart){
+  //     myChart = echarts.init(current);
+  //     this.MYCHAT[myChart.id] = myChart
+  //   }else{
+  //     myChart = this.MYCHAT[hasCreatEchart.id];
+  //     delete this.MYCHAT[hasCreatEchart.id];
+  //   }
 
+  //   myChart.setOption(option)
+      
+  //   return myChart;
+  // }
+
+
+  static render(current, option) {
+    let myChart = echarts.init(current);
     myChart.setOption(option)
       
     return myChart;

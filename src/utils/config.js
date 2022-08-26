@@ -5,14 +5,10 @@ export default {
       var div = document.createElement("div");
       div.id = "Y_loading";
       div.innerHTML = `
-      <div class="l-box j-full-curbox" style="position:fixed;z-index:999">
-        <div class="l-circle">
-          <div class="c1"></div>
-          <div class="c2"></div>
-          <div class="c3"></div>
-          <div class="c4"></div>
-        </div>
-        <span>loading</span>
+      <div class="loader" >
+        <div class="inner one"></div>
+        <div class="inner two"></div>
+        <div class="inner three"></div>
       </div>`;
       document.body.appendChild(div);
       return;

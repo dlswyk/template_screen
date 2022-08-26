@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ajData from './anji.json'
+import ajData from '../../static/json/anji.json'
 export default{
   data () {
     return {
