@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import ajData from '../../static/json/anji.json'
+import ajData from '../../assets/json/anji.json'
+import CNData from '../../assets/json/china.json'
 export default{
   data () {
     return {
@@ -62,23 +63,25 @@ export default{
 
       cityname:"安吉县",
 
-      cityList:[]
+      cityList:[],
+
+      show:false
     };
   },
 
   created(){
-    // this.getOrgBedCount();
   },
 
   mounted(){
     this.getInstance(ajData);
+    // this.getInstance(CNData);
   },
 
   methods: {
 
     // 实例化对象 进行图形化渲染
     // 在json 文件下的properties 下添加 "cp":[119.772,30.6962], 修改地区名称显示位置
-    getInstance(data) {
+    getInstance(data,name) {
       const { Map, Basis } = this.$mychar;
       
       var img = new Image();
@@ -87,7 +90,7 @@ export default{
       // let option = new Map().renderMap();
       let option = new Map().renderMap3D({img:img});
 
-      this.$echarts.registerMap("gdmap", data);
+      this.$echarts.registerMap(name || "gdmap", data);
 
       this.custom(option,data);
 
@@ -96,19 +99,20 @@ export default{
       //清除当前元素点击  ！！！
       myChart.off("click");
 
-      this.clearClick(myChart);
+      this.clearClick(myChart,option);
     },
 
     // 左键点击
-    clearClick(myChart) {
+    clearClick(myChart,option) {
+      console.log('mychart',myChart);
       myChart.on("click", (params) => {
-        console.log('params.data',params.data);
+        console.log('params.data',params);
         let data = params.data;
         if(data && data.name){
-
-          this.$store.commit("screen/setDialogInfo", {vdata:data});
-
-          this.$EventBus.$emit('C_Dialog','DbedInfo',{title:data.name,width:'1100px',minWidth:'1100px'})
+          this.getInstance(ajData,'aj');
+          // this.$echarts.registerMap("aj", ajData);
+          // this.custom(option,ajData);
+          // Basis.render(this.$refs.column_con, option);
         }
         
       });
@@ -124,11 +128,11 @@ export default{
       var series = {
         type: "scatter3D",
         coordinateSystem: "geo3D",
-        zlevel:'30',
+        zlevel:30,
         // type: "effectScatter",
         // coordinateSystem: "geo",
  
-        silent:false,
+        // silent:false,
 
         color:"#fde292",
         data: [...this.list],
@@ -147,7 +151,7 @@ export default{
       }
 
       // 设置3d图上涟漪的自定义图片配置
-      option.series = series;
+      option.series[1] = series;
     },
 
     

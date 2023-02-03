@@ -2,7 +2,7 @@
   <div id="app">
     <ScreenAdapter>
       <video  loop muted width="100%" height="100%" autoplay  class="bg_video" x5-playsinline="true" playsinline="true" webkit-playsinline="true" x5-video-player-type="h5">
-        <source src="@/static/video/bg.mp4" type="video/mp4">
+        <source src="@/assets/video/bg.mp4" type="video/mp4">
       </video>
       <router-view/>
     </ScreenAdapter>
@@ -22,7 +22,7 @@ export default{
 
 
 <style lang="scss">
-  @import url('~@/static/css/common.css');
+  @import url('~@/assets/css/common.css');
   
   #app{width: 100%;height: 100%;background:rgba(221,221,221,.2);}
 

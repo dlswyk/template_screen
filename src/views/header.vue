@@ -53,8 +53,8 @@ export default  {
   },
 
   beforeDestroy () {
-    if (this.formatDate) {
-      clearTimeout(this.formatDate) // 在Vue实例销毁前，清除时间定时器
+    if (this.timeOut) {
+      clearTimeout(this.timeOut) // 在Vue实例销毁前，清除时间定时器
     }
   },
 }
@@ -83,7 +83,7 @@ export default  {
     width: 100%;
     height: 100px;
     text-align: center;
-    background: url("~@/static/images/header.png") no-repeat 0 0/100% 100%;
+    background: url("~@/assets/images/header.png") no-repeat 0 0/100% 100%;
     .title{
       font-weight: 700;
       letter-spacing: 16px;

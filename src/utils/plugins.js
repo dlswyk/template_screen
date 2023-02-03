@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 // echart基础配置
 import * as echarts from 'echarts';
-import echartsOp from  "@/static/js/echartOp.js";
+import echartsOp from  "./echartOp.js";
 import * as echartsGL from 'echarts-gl' //
 
 // 全屏

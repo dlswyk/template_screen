@@ -21,7 +21,6 @@ export default {
     if(document.querySelector("#Y_tip")){
       return;
     }
-
     var div = document.createElement("span");
     div.id = "Y_tip";
     if (!val) {
@@ -32,29 +31,6 @@ export default {
     setTimeout(function () {
       document.body.removeChild(document.querySelector("#Y_tip"));
     }, bool ? bool : 2000)
-  },
-
-  //地址参数 对象合成
-  httprequestquery(list){
-    let params = [];
-    
-    for(let i in list){
-      params.push(i + "=" + list[i]);
-    }
-    return params.length>0 ? '?' + params.join("&") : '';
-  },
-
-  //地址参数 对象合成 加密 list 传参对象  boolen 如果不存在或者为真就加密  boolen false解密
-  httprequestencode(list,boolen){
-    let params = [];
-
-    boolen?boolen:true;
-   
-    for(let i in list){
-      let item =boolen?window.btoa(unescape(encodeURIComponent(list[i]))):decodeURIComponent(escape(window.atob(list[i])));
-      params.push(i + "=" + item);
-    }
-    return params.length>0 ? '?' + params.join("&") : '';
   },
 
   getParams: function (search) {
@@ -79,47 +55,6 @@ export default {
     return r;
   },
 
-
-  /**
-   * @param {*} num 需要转换金额
-   * @param {*} type 0：元  1：万元  2:亿元 以此类推
-   * @param {*} fixed 保留小数
-   * @returns 
-   */
-  unitConvert:function(num,type=1,fixed=2) {
-    var dividend = Math.pow(10000,type)
-    var curNum = num;
-    //转换金额位数
-    curNum = curNum / dividend 
-    return curNum.toFixed(fixed);
-  },
-
-  /** 字符串替换****
-   * @param {*} str 目标字符串
-   * @returns case 2 3用于脱敏姓名   11 手机号  18身份证
-   */
-  strReplace:function (str){
-    var len = str.length;
-    // console.log('str',len);
-    var aim = '';
-    switch(len){
-      case 2:
-        aim = str.replace(/.*(?=[\u4e00-\u9fa5])/,  "*");
-        break;
-      case 3:
-        aim = str.replace(/(?<=[\u4e00-\u9fa5]).*(?=[\u4e00-\u9fa5])/,  "*");
-        break;
-      case 11:
-        aim = str.replace(/^(.{3})(?:\d+)(.{2})$/,  "\$1****\$2");
-        break;
-      case 18:
-        aim = str.replace(/^(.{3})(?:\d+)(.{4})$/,  "\$1******\$2");
-        break;
-      default:
-        aim = str;
-    }
-    return aim;
-  },
 
   /**
    * @param {*} num 获取前几个月

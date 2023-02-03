@@ -17,6 +17,10 @@ export default  {
     }
   },
   created(){
+    
+  },
+
+  mounted(){
   },
  
   methods:{

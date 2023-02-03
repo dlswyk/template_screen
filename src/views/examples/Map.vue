@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ajData from '@/static/json/china.json'
+import ajData from '@/assets/json/china.json'
 export default{
   data () {
     return {

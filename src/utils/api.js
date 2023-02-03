@@ -1,4 +1,4 @@
-import {request} from "@/static/js/request.js";
+import {request} from "./request.js";
 export default {
   // 上传接口
   common:{

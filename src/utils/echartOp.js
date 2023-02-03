@@ -1000,6 +1000,406 @@ class Map{
       }]
     };
   }
+
+  renderMap3D2(opt){
+    return {
+      tooltip: {
+        trigger: 'item',
+        formatter:'{b0}',
+        textStyle:{
+          color:"#5e92f6"
+        }
+      },
+      geo3D:{
+        type: "map3D", 
+        map: 'gdmap',
+        zlevel: 1,
+        regionHeight: 3,
+        // regions:[{
+        //   name:"xxx",
+        //   label:{
+        //     show:true,
+        //     distance: 20,
+        //     color:"#fff"
+        //   },
+        // }],
+        
+        // 设置3D地图材质
+        shading:'color',
+        colorMaterial:{
+          detailTexture:opt.img,
+          textureTiling:1
+        },
+        itemStyle: { 
+          borderWidth: 1,
+          borderColor: 'rgba(57, 132, 138,.5)',
+        },
+        emphasis:{
+          label:{show:true,color:'#fff',distance: 20},
+          itemStyle:{
+            color:"#fff",
+            borderColor:"#FFF"
+          },
+        },
+        viewControl: {
+          alpha: 40,
+          // beta: 160,
+          targetCoord: [116.46, 39.92],
+          autoRotate: true,
+          autoRotateAfterStill: 3,
+          distance: 120,
+          maxAlpha:360,
+          // 设置大一点防止转一圈就停止
+          maxBeta:360000,
+          autoRotateSpeed:2
+        },
+      },
+      series: [{
+        type: "map3D", 
+        map: 'gdmap',
+        zlevel: 1,
+        regionHeight: 3,
+        selectedMode: "single", //地图高亮单选
+        // regions:[{
+        //   name:"xxx",
+        //   label:{
+        //     show:true,
+        //     distance: 20,
+        //     color:"#fff"
+        //   },
+        // }],
+        
+        // 设置3D地图材质
+        shading:'color',
+        colorMaterial:{
+          detailTexture:opt.img,
+          textureTiling:1
+        },
+
+        itemStyle: { 
+          borderWidth: 1,
+          borderColor: 'rgba(57, 132, 138,.5)',
+        },
+        emphasis:{
+          label:{show:true,color:'#fff',distance: 20},
+          itemStyle:{
+            color:"#fff",
+            borderColor:"#FFF"
+          },
+        },
+        viewControl: {
+          alpha: 40,
+          // beta: 160,
+          targetCoord: [116.46, 39.92],
+          autoRotate: true,
+          autoRotateAfterStill: 3,
+          distance: 120,
+          maxAlpha:360,
+          // 设置大一点防止转一圈就停止
+          maxBeta:360000,
+          autoRotateSpeed:2
+        },
+      },
+      {
+        type: "scatter3D",
+        coordinateSystem: "geo3D",
+        selectedMode: "single", //地图高亮单选
+        zlevel:'30',
+        //自定义 注意 当时暂时不支持图片模式
+        symbol:"circle",
+
+        symbolSize: [40, 30],
+
+        emphasis: {
+          label: {
+            show: true,
+            position: 'top',
+            distance: 0,
+            formatter(params) {
+              return `{a|${params.name}}`;
+            },
+            rich: {
+              a: {
+                backgroundColor:'#fff',
+                borderWidth:0,
+                color:"#5e92f6",
+                borderRadius:5,
+                fontSize:20,
+                padding:[10,15],
+              },
+            },
+            textStyle: {
+              color: '#ffffff',
+            },
+          },
+        }
+      }]
+    };
+  }
+
+  // 地图和散点时间分别触发  但是地图渐变比renderMap3D不清楚
+  renderMap3DTWO(opt){
+    return {
+      tooltip: {
+        trigger: 'item',
+        formatter:'{b0}',
+        textStyle:{
+          color:"#5e92f6"
+        }
+      },
+     
+      geo3D: {
+        map: "gdmap",
+        show: false,
+        zlevel: 1,
+        regionHeight: 3,
+        emphasis:{
+          label:{show:true,color:'#fff',distance: 20},
+          itemStyle:{
+            color:"#fff",
+            borderColor:"#FFF"
+          },
+        },
+        viewControl: {
+          alpha: 40,
+          // beta: 160,
+          targetCoord: [116.46, 39.92],
+          autoRotate: true,
+          autoRotateAfterStill: 3,
+          distance: 120,
+          maxAlpha:360,
+          // 设置大一点防止转一圈就停止
+          maxBeta:360000,
+          autoRotateSpeed:2
+        },
+      },
+
+      series: [
+        {
+          type: "map3D",
+          map: "gdmap",
+          name: "gdmap",
+          selectedMode: "single", //地图高亮单选
+          regionHeight: 5, //地图高度
+          zlevel: 1,
+          regionHeight: 3,
+
+          // 设置3D地图材质
+          shading:'color',
+          colorMaterial:{
+            detailTexture:opt.img,
+            textureTiling:1
+          },
+          itemStyle: { 
+            borderWidth: 1,
+            borderColor: 'rgba(57, 132, 138,.5)',
+          },
+          emphasis:{
+            label:{show:true,color:'#fff',distance: 20},
+            itemStyle:{
+              color:"#fff",
+              borderColor:"#FFF"
+            },
+          },
+          viewControl: {
+            alpha: 40,
+            // beta: 160,
+            targetCoord: [116.46, 39.92],
+            autoRotate: true,
+            autoRotateAfterStill: 3,
+            distance: 120,
+            maxAlpha:360,
+            // 设置大一点防止转一圈就停止
+            maxBeta:360000,
+            autoRotateSpeed:2
+          },
+      },
+      {
+        type: "scatter3D",
+        coordinateSystem: "geo3D",
+        selectedMode: "single", //地图高亮单选
+        zlevel:'30',
+        //自定义 注意 当时暂时不支持图片模式
+        symbol:"circle",
+
+        symbolSize: [40, 30],
+
+        emphasis: {
+          label: {
+            show: true,
+            position: 'top',
+            distance: 0,
+            formatter(params) {
+              return `{a|${params.name}}`;
+            },
+            rich: {
+              a: {
+                backgroundColor:'#fff',
+                borderWidth:0,
+                color:"#5e92f6",
+                borderRadius:5,
+                fontSize:20,
+                padding:[10,15],
+              },
+            },
+            textStyle: {
+              color: '#ffffff',
+            },
+          },
+        }
+      }]
+    };
+  }
+
+  renderMap3D3(opt){
+    return {
+      tooltip: {
+        trigger: 'item',
+        formatter:'{b0}',
+        textStyle:{
+          color:"#5e92f6"
+        }
+      },
+     
+      geo: {
+        type: "map",
+        map: "gdmap",
+        show: false,
+      },
+      geo3D: {
+        map: "gdmap",
+        show: false,
+        zlevel: -10,
+        boxWidth: 200,
+        boxHeight: 4, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
+        regionHeight: 3,
+        shading: "lambert",
+
+        viewControl: {
+          projection: "perspective",
+          autoRotate: false,
+          damping: 0,
+          rotateSensitivity: 2, //旋转操作的灵敏度
+          rotateMouseButton: "left", //旋转操作使用的鼠标按键
+          zoomSensitivity: 2, //缩放操作的灵敏度
+          panSensitivity: 2, //平移操作的灵敏度
+          panMouseButton: "right", //平移操作使用的鼠标按键
+
+          distance: 500, //默认视角距离主体的距离
+          center: [0, 0, 0],
+
+          animation: true,
+          animationDurationUpdate: 1000,
+          animationEasingUpdate: "cubicInOut",
+        },
+      },
+
+      series: [
+        {
+          type: "map3D",
+          map: "gdmap",
+          name: "gdmap",
+          selectedMode: "single", //地图高亮单选
+          regionHeight: 5, //地图高度
+
+          show: true,
+          zlevel: 1,
+          boxWidth: 200,
+          //boxHeight: 4, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
+          regionHeight: 3,
+          shading: "lambert",
+          label: {
+            // 标签的相关设置
+            show: false,
+          },
+
+          itemStyle: {
+            color: "#2B5890",
+            areaColor: "#025894",
+            opacity: 0.8,
+            borderWidth: 3,
+            borderColor: "#5578A5",
+          },
+          emphasis: {
+            label: {
+              show: true,
+
+              textStyle: {
+                color: "#fff",
+                fontSize: 14,
+                backgroundColor: "transparent", // 字体背景色
+              },
+            },
+            shading: "lambert",
+
+            borderColor: "#333",
+            borderWidth: 5,
+            itemStyle: {
+              color: "#025894",
+              areaColor: "#025894",
+            },
+          },
+          light: {
+            main: {
+              shadow: true,
+              shadowQuality: "ultra",
+            },
+          },
+
+          viewControl: {
+            projection: "perspective",
+            autoRotate: false,
+            damping: 0,
+            rotateSensitivity: 2, //旋转操作的灵敏度
+            rotateMouseButton: "left", //旋转操作使用的鼠标按键
+            zoomSensitivity: 2, //缩放操作的灵敏度
+            panSensitivity: 2, //平移操作的灵敏度
+            panMouseButton: "right", //平移操作使用的鼠标按键
+
+            distance: 500, //默认视角距离主体的距离
+            center: [0, 0, 0],
+
+            animation: true,
+            animationDurationUpdate: 1000,
+            animationEasingUpdate: "cubicInOut",
+          },
+        },
+      {
+        type: "scatter3D",
+        coordinateSystem: "geo3D",
+        selectedMode: "single", //地图高亮单选
+        zlevel:'30',
+        //自定义 注意 当时暂时不支持图片模式
+        symbol:"circle",
+
+        symbolSize: [40, 30],
+
+        emphasis: {
+          label: {
+            show: true,
+            position: 'top',
+            distance: 0,
+            formatter(params) {
+              return `{a|${params.name}}`;
+            },
+            rich: {
+              a: {
+                backgroundColor:'#fff',
+                borderWidth:0,
+                color:"#5e92f6",
+                borderRadius:5,
+                fontSize:20,
+                padding:[10,15],
+              },
+            },
+            textStyle: {
+              color: '#ffffff',
+            },
+          },
+        }
+      }]
+    };
+  }
 }
 
 //高德地图使用  echarts 数据格式化 geoJson  
