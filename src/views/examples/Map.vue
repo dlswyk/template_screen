@@ -7,7 +7,11 @@ import ajData from '@/assets/json/china.json'
 export default{
   data () {
     return {
+      currentIndex: 0,
 
+      default: "xx市",
+
+      cityname: "xx市",
     };
   },
 
@@ -30,66 +34,70 @@ export default{
 
       let option = new Map().renderMap();
 
-      // 自定义地图样式
-      // option.geo = [{
-      //     map: 'gdmap',
-      //     show: true,
-      //     zlevel: 2,
-      //     left:'30%',
-      //     right:'5%',
-      //     aspectScale:1.2,
-      //     label:{
-      //       show:true,
-      //       position: 'top',
-      //       color:"rgba(255,255,255,.8)",
-      //     },
-      //     itemStyle:{
-      //       // areaColor:"#76bbff",
-            
-      //       areaColor:new this.$echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: '#1f84de'},{offset: .8, color: '#2796e9'}]),
-      //       // areaColor:new this.$echarts.graphic.LinearGradient(0, 0, 0, 1,[{offset: 0, color: "#5598ff"},{offset:.8, color: "#76bbff"}]),
-      //       borderWidth:2,
-      //       borderColor:"rgba(28,85,142,.3)",
-      //       // shadowColor: '#2ea0f0',
-      //       // shadowBlur: 4,
-      //     },
-      //     emphasis:{
-      //       label:{show:true,color:'#fff'},
-      //       itemStyle:{
-      //         areaColor:"#3095f9",
-      //         borderColor:"#1c558e",
-      //       },
-      //     },
-      //   },
-      //   {
-      //     map: 'gdmap',
-      //     show: true,
-      //     left:'30%',
-      //     right:'5%',
-      //     aspectScale:1.2,
-      //     itemStyle:{
-      //       borderColor:"#497679",
-      //       shadowColor: '#03132d',
-      //       shadowBlur: 10,
-      //       shadowOffsetY: 20,
-      //     }
-      //   },
-      //   {
-      //     map: 'gdmap',
-      //     show: true,
-      //     left:'30%',
-      //     right:'5%',
-      //     aspectScale:1.2,
-      //     itemStyle:{
-      //       borderColor:"#497679",
-      //       shadowColor: '#042a6a',
-      //       shadowBlur: 5,
-      //       shadowOffsetY: 15,
-      //     }
-      //   }
-      // ]
+      let myChart = Basis.render(this.$refs.column_con, option);
 
-      Basis.render(this.$refs.column_con, option);
+      //初始默认就展示第一个
+      // this.dispatchAction(myChart);
+
+      // setInterval(() => {
+      //   this.dispatchAction(myChart);
+
+      //   if(this.currentIndex == this.country.length){
+      //     this.currentIndex = 0;
+      //   }
+      // }, 5000);
+
+      //清除当前元素点击  ！！！
+      // myChart.off("click");
+      // myChart.off("contextmenu");
+
+      // // 禁止当前元素的右键事件
+      // this.$refs.map.oncontextmenu = function () {
+      //   return false;
+      // };
+
+      // // 配置当前地图的 左键和右键点击事件
+      // this.clearClick(myChart);
+      // this.clearContextmenu(myChart);
+    },
+
+    // 获取区域json
+    getJson(name) {
+      var url = "../static/json/county/" + name + ".json";
+      axios.get(url, {}, {}).then((res) => {
+        this.getInstance(res.data);
+      });
+    },
+
+    // 左键点击下钻地图
+    clearClick(myChart) {
+      myChart.on("click", (params) => {
+        if (this.cityname == params.name) return;
+        
+        this.cityname = params.name;
+        this.getJson(params.name);
+      });
+    },
+
+    // 右键返回市级地图
+    clearContextmenu(myChart) {
+      myChart.on("contextmenu", (params) => {
+        if (this.cityname == this.default) return;
+        this.cityname = this.default;
+        this.getJson(this.cityname);
+      });
+    },
+
+    // 轮播
+    dispatchAction(myChart) {
+      // console.log(this.country[this.currentIndex].name);
+      myChart.dispatchAction({
+        type: "showTip",
+        seriesIndex: this.currentIndex,
+        // name: this.country[this.currentIndex].name
+        dataIndex: 0,
+      });
+      this.currentIndex++;
     },
   }
 }

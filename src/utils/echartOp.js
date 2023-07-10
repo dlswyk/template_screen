@@ -10,7 +10,7 @@ class Basis {
   // 全局主色调
   static color = ['#60D7A7', '#2060ED', '#F9CB34',  '#6242FB', '#1041AA'];
   
-  // echarts 初始化及配置 解决了控制台警告问题
+  // echarts 初始化及配置 解决了控制台警告问题   不过好像有相同组件调用只显示一个问题
   // static render(current, option) {
   //   // 是否已经创建过了
   //   let hasCreatEchart = echarts.getInstanceByDom(current);
@@ -160,6 +160,74 @@ class Pie {
 
   /**
    * @param {*} opt 
+   * opt:{
+   *  legend:['x1','x2','x3']
+   *  data:[100,80,20],
+   *  color:["#3F6FFF", "#4EEBA7",'#F5E440']
+   * }
+   */
+  renderSingleMultiPie(opt){
+    var colors = opt.color || ["#3F6FFF", "#4EEBA7",'#F5E440'];
+    //灰色部分统一设置颜色
+    var placeHolderStyle = {
+      normal: {
+        // opacity: 0,
+        color: '#e9eef4',
+      },
+      emphasis: {
+        // opacity: 0,
+        color: '#e9eef4',
+      }
+    };
+    
+    var radiusWidth = 16;  //多圆环宽度
+    var radiusSpace = 26;  //多圆环间距
+    const length = opt.data.length;
+    
+    var series = opt.data.map((item,index)=>{
+      var radius = (length-index)*radiusSpace;
+      return {
+        name: opt.legend[index],
+        type: 'pie',
+        minAngle: 200,
+        radius: [radius-radiusWidth,radius],
+        hoverAnimation: false,
+        data:index===0?[{
+          value: item,
+          itemStyle: {normal: {color: colors[index]}},
+          label: {show:false}
+        }]:[{
+          value: item,
+          itemStyle: {normal: {color: colors[index]}},
+          label: {show:false}
+        },{
+          value: opt.data[0] - item,
+          label:{show:false},
+          itemStyle: placeHolderStyle,
+          labelLine:{show:false}
+        }]
+      }
+    })
+    return {
+      tooltip: {
+        trigger: "item",
+      },
+      legend:{
+        orient: '',
+        icon: 'circle',
+        left: 10,
+        top: 10,
+        data: opt.legend,
+        textStyle: {
+          color: '#999'
+        }
+      },
+      series
+    }
+  }
+
+  /**
+   * @param {*} opt 
    * @param {*} opt.title 名称 
    * @param {*} opt.data  数据
    * @param {*} opt.default  不需要设置  使用默认处理方式 如果设置false 自行处理
@@ -185,7 +253,7 @@ class Pie {
       ],
     },
   */
-  renderrMultiPie(opt) {
+  renderMultiPie(opt) {
     const data = opt.data;
     if(opt.default != false){
       var series = [];
@@ -311,7 +379,6 @@ class Bar {
         type: 'value',
         // interval: 5,  // 步长
         splitNumber: 5,
-        min: 0,
         // max: function(max) {return value.max},
         // 网格线设置
         splitLine: {
@@ -501,6 +568,7 @@ class FoldLine {
 
         boundaryGap: false,  // 坐标轴两边不留白(默认刻度位于文本中间，作为分割线)
         axisTick: {     // 刻度隐藏
+          onZero: false ,   //-----------重点 有负值展示
           show: false,
         },
         axisLine: {
@@ -512,7 +580,6 @@ class FoldLine {
       yAxis: {
         type: 'value',
         splitNumber: 5,
-        min: 0,
         splitLine: {
           show: true,
           lineStyle: {
