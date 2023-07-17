@@ -29,10 +29,4 @@ export default{
   // 注意使用视频作为背景图在平板上可能有问题
   .bg_video{position: absolute;left: 0;top: 0;width: 100%;height: 100%;object-fit: cover;}
 
-  /* 每块渐变色 */
-  .bg-box{padding: 30px 25px 10px;box-sizing: border-box; background: linear-gradient(180deg, rgba(110, 181, 223, 0.2) 0%, rgba(132, 219, 235, 0.2) 100%);}
-
-  /* 每块颜色标题 */
-  .title{font-size: 20px;font-family: Songti SC;font-weight: 900;;background: linear-gradient(180deg, #CCD9E1 39.4287109375%, #5DABCE 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
-
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div class="j-flex-col side text-color-grey">
-    <div class="first bg-box"></div>
+    <div class="first custom-box"></div>
 
-    <div class="second bg-box"></div>
+    <div class="second custom-box"></div>
 
-    <div class="third bg-box"></div>
+    <div class="third custom-box"></div>
      
   </div>
 </template>

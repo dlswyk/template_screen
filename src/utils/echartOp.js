@@ -30,7 +30,6 @@ class Basis {
   //   return myChart;
   // }
 
-
   static render(current, option) {
     let myChart = echarts.init(current);
     myChart.setOption(option)
@@ -38,48 +37,102 @@ class Basis {
     return myChart;
   }
 
-  // 标题属性
-  static titleOp(opt) {
-    return {
-      title:[
-        { 
-          text: '{a|}'+'\t'+'{b|'+opt.title+'}',
-          left: '0',
-          top: '0',
-          color: '#666666',
-          textStyle:{
-            rich: {
-              a: {
-                width: 17,
-                height: 18,
-                backgroundColor: {
-                  // image: require('@common/images/icon.png')
-                }
-              },
-              b: {
-                height: 25,
-                lineHeight: 30,
-                padding: [8, 0, 0, 0],
-                fontSize: 14,
-                fontWeight: 'bold',
-                color: '#666666',
-              }
-            }
-          }
+  // 公共tooltip配置
+  static tooltip = (trigger = 'item',type='shadow')=>({
+    trigger,
+    backgroundColor:'#fff',
+    borderWidth:0,
+    textStyle: {
+      color:"#5e92f6",
+      fontSize:16,
+    },
+    padding:10,
+    axisPointer: { // 坐标轴指示器，坐标轴触发有效
+      type, // 默认为直线，可选为：'line' | 'shadow'
+      shadowStyle: {
+        color: "rgba(13,139,243,0.2)"
+      }
+    },
+  })
+
+  // 公共legend
+  static legend =(data=[])=>({
+    orient: 'vertical',
+    top: 'center',
+    right:"2%",
+    formatter:function(name) {
+      let total = 0;   // 总数
+      let v;    // 标签对应的数据
+      for (let i = 0; i < data.length; i++) {
+        total += data[i].value;
+        if (data[i].name == name) {
+          v = data[i].value;
         }
-        ,{
-          text: opt.subtext ? opt.subtext : '',
-          right: '5%',
-          top: '1%', 
-          padding: [16, 0, 0, 0],
-          textStyle:{
-            color: '#5E92F6', 
-            fontSize: 11
-          }
-        }
-      ]
+      }
+      return `${name}  ${((isNaN_(v/total))*100).toFixed(2)+'%'}`;
+    },
+
+    textStyle:{
+      color: '#fff'
     }
-  }
+  })
+
+  // 公共xAxis
+  static xAxis=(data)=>({
+    type: 'category',
+    data,   // x轴标签
+    axisTick: {     // 刻度隐藏
+      show: false,
+    },
+    // x轴文字标签
+    axisLabel: {
+      fontSize: 12,
+      margin: 12,    // 刻度标签与轴线之间的距离
+      interval: "auto", // x轴标签间隔显示，自动
+      // interval: 0    // x轴标签全部显示
+    },
+    // x轴线条
+    axisLine: {
+      lineStyle: {
+        color: "rgba(184, 195, 242, .2)",
+        width: 0.5,
+      }
+    },
+  })
+
+  // 公共 yAxis
+  static yAxis=()=>({
+    type: 'value',
+    min: 0,
+    axisLabel: {
+      fontSize: 12,
+      color: "#fff"
+    },
+    nameTextStyle: {
+      color:"#fff"
+    },
+    axisLine: {
+      show:false
+    },
+    splitLine: {
+      show:true,
+      lineStyle: {
+        color: "rgba(184, 195, 242, .2)"
+      }
+    },
+    axisTick:{
+      show:false
+    },
+  })
+
+  // 公共 grid
+  static grid=()=>({
+    top:'15%',
+    left: '5%',
+    containLabel: true,
+    height:'80%',
+    width:'90%',
+  })
 }
 
 class Pie {
@@ -92,116 +145,70 @@ class Pie {
    * @示例
    * opt:{
       data:[
-        { value: 1048, name: '部门任务数量' },
-        { value: 1048, name: '11361361' },
+        { value: 666, name: 'pie1' },
+        { value: 888, name: 'pie2' },
       ],
     },
    */
   renderPie(opt) {
-    const data = opt.data;
+    const {data} = opt;
     return {
-      title: opt.title && Basis.titleOp(opt).title,
-
-      tooltip: {
-        trigger: 'item',
-        backgroundColor:'#fff',
-        borderWidth:0,
-        textStyle: {
-          color:"#5e92f6",
-          fontSize:16,
-        },
-        padding:10,
-      },
-       // 图例
-       legend:{
-        orient: 'vertical',
-        top: 'center',
-        right:"2%",
-        itemWidth: 8,   // 图例文本前小图形的宽高
-        itemHeight: 8,
-        icon: 'circle',
-        formatter:function(name) {
-          let total = 0;   // 总数
-          let tarValue;    // 标签对应的数据
-          for (let i = 0; i < data.length; i++) {
-            total += data[i].value;
-            if (data[i].name == name) {
-              tarValue = data[i].value;
-            }
-          }
-
-          return `{a|${name}}  ${((isNaN_(tarValue/total))*100).toFixed(2)+'%'}`;
-        },
-        textStyle:{
-          fontSize: 14,
-          color: '#666666',
-          lineHeight: 20,
-          rich: {
-            a:{
-              width: 60,
-            },
-            b:{
-              width: 50,
-              padding:[0,0,0,10],
-            },
-          }
-        }
-      },
+      tooltip:Basis.tooltip(),
+      legend:Basis.legend(data),
       series: [{
         type: 'pie',
         // minAngle: 15,
         radius:["40%","60%"],
         center:['30%', '50%'],
         label: { show: false,},
-        data: data
+        data
       }]
     }
   }
 
   /**
    * @param {*} opt 
+   * @param {*} opt.data  数据
+   * @param {*} opt.radiusWidth  多圆环宽度
+   * @param {*} opt.radiusSpace  多圆环间距
    * opt:{
-   *  legend:['x1','x2','x3']
-   *  data:[100,80,20],
-   *  color:["#3F6FFF", "#4EEBA7",'#F5E440']
-   * }
+      data:[
+        { value: 666, name: 'pie1' },
+        { value: 888, name: 'pie2' },
+        { value: 999, name: 'pie3' },
+      ],
+      color:["#3F6FFF", "#4EEBA7",'#F5E440']
+    }
    */
   renderSingleMultiPie(opt){
+    const {data,radiusWidth=30,radiusSpace=60} = opt;
     var colors = opt.color || ["#3F6FFF", "#4EEBA7",'#F5E440'];
     //灰色部分统一设置颜色
     var placeHolderStyle = {
-      normal: {
-        // opacity: 0,
-        color: '#e9eef4',
-      },
-      emphasis: {
-        // opacity: 0,
-        color: '#e9eef4',
-      }
+      normal: {opacity: 0},
+      emphasis: {opacity: 0}
     };
-    
-    var radiusWidth = 16;  //多圆环宽度
-    var radiusSpace = 26;  //多圆环间距
-    const length = opt.data.length;
-    
-    var series = opt.data.map((item,index)=>{
-      var radius = (length-index)*radiusSpace;
+
+    const len = data.length;
+    var series = data.map((item,i)=>{
+      var radius = (len-i)*radiusSpace;
       return {
-        name: opt.legend[index],
+        name: item.name,
         type: 'pie',
         minAngle: 200,
+        startAngle:80*i,
         radius: [radius-radiusWidth,radius],
         hoverAnimation: false,
-        data:index===0?[{
-          value: item,
-          itemStyle: {normal: {color: colors[index]}},
+        data:i===0?[{
+          value: item.value,
+          itemStyle: {normal: {color: colors[i]}},
           label: {show:false}
         }]:[{
-          value: item,
-          itemStyle: {normal: {color: colors[index]}},
+          value: item.value,
+          itemStyle: {normal: {color: colors[i]}},
           label: {show:false}
         },{
-          value: opt.data[0] - item,
+          value: opt.data[0].value - item.value,
           label:{show:false},
           itemStyle: placeHolderStyle,
           labelLine:{show:false}
@@ -209,57 +216,44 @@ class Pie {
       }
     })
     return {
-      tooltip: {
-        trigger: "item",
-      },
-      legend:{
-        orient: '',
-        icon: 'circle',
-        left: 10,
-        top: 10,
-        data: opt.legend,
-        textStyle: {
-          color: '#999'
-        }
-      },
+      tooltip:Basis.tooltip(),
+      // legend:Basis.legend(data),
       series
     }
   }
 
   /**
    * @param {*} opt 
-   * @param {*} opt.title 名称 
    * @param {*} opt.data  数据
+   * @param {*} opt.radiusWidth  多圆环宽度
+   * @param {*} opt.radiusSpace  多圆环间距
    * @param {*} opt.default  不需要设置  使用默认处理方式 如果设置false 自行处理
    * @returns 
    * 
    * @示例
    * opt:{
-      title:"多圆环图" ,
       data:[
-        data:[
-          [
-            { value: 231, name: '男' },
-            { value: 1048, name: '女' },
-          ],
-          [
-            { value: 231, name: '60-69岁' },
-            { value: 1048, name: '70-79岁' },
-            { value: 1048, name: '80-89岁' },
-            { value: 1048, name: '90-99岁' },
-            { value: 1048, name: '100岁及以上' },
-          ],
+        [
+          { value: 231, name: '男' },
+          { value: 1048, name: '女' },
+        ],
+        [
+          { value: 231, name: '60-69岁' },
+          { value: 1048, name: '70-79岁' },
+          { value: 1048, name: '80-89岁' },
+          { value: 1048, name: '90-99岁' },
+          { value: 1048, name: '100岁及以上' },
         ],
       ],
-    },
-  */
-  renderMultiPie(opt) {
-    const data = opt.data;
+    }
+  **/
+
+  renderMultiPie(opt){
+    const {data,radiusWidth=30,radiusSpace=60} = opt;
+    
     if(opt.default != false){
-      var series = [];
-      var radiusWidth = 16;  //多圆环宽度
-      var radiusSpace = 26;  //多圆环间距
-      for(var i=0;i<data.length;i++){
+      var series = [],len = data.length;
+      for(var i=0;i<len;i++){
         var radius = (i+1)*radiusSpace;
         series.push(
           {
@@ -274,45 +268,198 @@ class Pie {
       }
     }
     return {
-      title: opt.title && Basis.titleOp(opt).title,
+      tooltip:Basis.tooltip(),
 
-      tooltip: {
-        trigger: 'item',
-        backgroundColor:'#fff',
-        borderWidth:0,
-        textStyle: {
-          color:"#5e92f6",
-          fontSize:16,
-        },
-        padding:10,
-      },
-        // 图例
       legend:{
-        orient: 'vertical',
-        top: 'center',
-        right:"2%",
-        itemWidth: 8,   // 图例文本前小图形的宽高
-        itemHeight: 8,
-        icon: 'circle',
-        textStyle:{
-          fontSize: 14,
-          color: '#666666',
-          lineHeight: 20,
-          rich: {
-            a:{
-              width: 60,
-            },
-            b:{
-              width: 50,
-              padding:[0,0,0,10],
-            },
-          }
-        }
+        ...Basis.legend(),
+        formatter:'{name}'
       },
+      
       series: opt.default!=false && series
     }
   }
+
+  /**
+   * @param {*} opt 
+   * @param {*} opt.data  数据
+   * @param {*} opt.ratio  圆环空心大小 0~1
+   * @param {*} opt.opacity  透明度
+   * @param {*} opt.color  颜色
+   * @param {*} opt.label  是否展示label
+   * @returns
+   * @示例
+   * opt:{
+      data:[
+        {name: 'a',value: 44}, 
+        {name: 'b',value: 55}, 
+        {name: 'c',value: 16}
+      ],
+      opacity:'.5'
+      color:['#0089e5','#4134d5','#0dca9c','#00c1e1']
+    },
+   */
+  // 生成 3D 饼图的配置项
+  renderPie3D(opt) {
+    const {data:pieData, ratio:internalDiameterRatio = 0,color=[],opacity='.5',label=true} = opt
+    let series = [];
+    let sumValue = 0;
+    let startValue = 0;
+    let endValue = 0;
+    let legendData = [];
+    let k =typeof internalDiameterRatio !== "undefined"? (1 - internalDiameterRatio) / (1 + internalDiameterRatio): 1 / 3;
+    let len = pieData.length;
+    // 为每一个饼图数据，生成一个 series-surface 配置
+    for (let i = 0; i < len; i++) {
+      sumValue += pieData[i].value;
+
+      let seriesItem = {
+        name:typeof pieData[i].name === "undefined"? `series${i}`: pieData[i].name,
+        type: "surface",
+        parametric: true,
+        wireframe: {show: false},
+        pieData: pieData[i],
+        pieStatus: {
+          selected: false,
+          hovered: false,
+          k,
+        },
+        itemStyle:{
+          color:color[i%len],
+          opacity
+        },
+      };
+      
+      // 单个设置
+      if (typeof pieData[i].itemStyle != "undefined") {
+        let itemStyle = {};
+        typeof pieData[i].itemStyle.color != "undefined"? (itemStyle.color = pieData[i].itemStyle.color): null;
+        typeof pieData[i].itemStyle.opacity != "undefined"? (itemStyle.opacity = pieData[i].itemStyle.opacity): null;
+        seriesItem.itemStyle = itemStyle;
+      }
+
+      series.push(seriesItem);
+    }
+
+    // 使用上一次遍历时，计算出的数据和 sumValue，调用 getParametricEquation 函数，
+    // 向每个 series-surface 传入不同的参数方程 series-surface.parametricEquation，也就是实现每一个扇形。
+    for (let i = 0; i < series.length; i++) {
+      endValue = startValue + series[i].pieData.value;
+
+      series[i].pieData.startRatio = startValue / sumValue;
+      series[i].pieData.endRatio = endValue / sumValue;
+      series[i].parametricEquation = getParametricEquation(
+        series[i].pieData.startRatio,
+        series[i].pieData.endRatio,
+        false,
+        false,
+        k,
+        series[i].pieData.value
+      );
+
+      startValue = endValue;
+      legendData.push(series[i].name);
+    }
+    
+    // label 配置
+    label && series.push({
+      name: "pie2d",
+      type: "pie",
+      label: {
+        opacity: 1,
+        fontSize: 14,
+        lineHeight: 20,
+        overflow: "breakAll",
+        textStyle: {
+          color:'rgba(196, 218, 255, 0.7)'
+        },
+      },
+      labelLine: {
+        length: 20,
+        length2: 40,
+      },
+      startAngle: -30, //起始角度，支持范围[0, 360]。
+      clockwise: false, //饼图的扇区是否是顺时针排布。上述这两项配置主要是为了对齐3d的样式
+      radius: ["30%", "40%"],
+      center: ["50%", "50%"],
+      data:pieData,
+      itemStyle: {opacity: 0},
+    })
+
+    // 准备待返回的配置项，把准备好的 legendData、series 传入。
+    let option = {
+      // animation: true,
+      legend:{
+        show:false,
+        textStyle: {
+          color: '#fff',
+        },
+        formatter:(name)=>{
+          const data = pieData;
+          let tarValue; // 标签对应的数据
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].name == name) {
+              tarValue = data[i].value;
+            }
+          }
+          return `  ${name}  ${tarValue} 人`;
+        },
+        textStyle:{
+          color:'rgba(184, 195, 242, 1)',
+          fontSize: 16,
+          fontWeight:900,
+          lineHeight: 30
+        },
+        icon: "rect",
+        itemWidth: 8,
+        itemHeight: 8
+      },
+      label: {
+        show: true,
+        position: 'outside',
+        formatter: '{b} {d}%',
+      },
+      labelLine: {
+        show: true,
+        lineStyle: {
+          color: 'rgba(255,255,255,.6)',
+        },
+      },
+      tooltip: {
+        trigger: "item",
+        backgroundColor: "#fff",
+        borderWidth:0,
+        textStyle: {
+          color: "#5e92f6",
+          fontSize: 16,
+        },
+        padding: 10,
+        formatter: (params) => {
+          if (params.seriesName !== "mouseoutSeries") {
+            return `${params.seriesName}<br/><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${
+              params.color
+            };"></span>${option.series[params.seriesIndex].pieData.value}`;
+          }
+        },
+      },
+      xAxis3D: {min: -1,max: 1,},
+      yAxis3D: {min: -1,max: 1,},
+      zAxis3D: {min: -1,max: 1,},
+      grid3D: {
+        show: false,
+        boxHeight: 10,
+        viewControl: {
+          distance: 300,
+          alpha: 25,
+          beta: 40,
+          autoRotate: false, // 自动旋转
+        },
+      },
+      series
+    };
+    return option;
+  }
 }
+
 
 // 柱状图
 class Bar {
@@ -330,77 +477,17 @@ class Bar {
    */
   renderBar(opt) {
     return {
-      title: opt.title && Basis.titleOp(opt).title,
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: { // 坐标轴指示器，坐标轴触发有效
-          type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
-          shadowStyle: {
-            color: "rgba(13,139,243,0.2)"
-          }
-        },
-        borderWidth:0,
-        textStyle: {
-          color:"#5e92f6",
-          fontSize:16,
-        },
-        padding:20,
-        backgroundColor:"#fff"
-      },
-      textStyle: {
-        color: '#fff',
-        borderWidth:0
-      },
-      xAxis: {
-        type: 'category',
-        data: opt.axis,   // x轴标签
-        axisTick: {     // 刻度隐藏
-          show: false,
-        },
-        // x轴文字标签
-        axisLabel: {
-          fontSize: 12,
-          margin: 12,    // 刻度标签与轴线之间的距离
-          // interval: "auto", // x轴标签间隔显示，自动
-          interval: 0    // x轴标签全部显示
-        },
-        // x轴线条
-        axisLine: {
-          lineStyle: {
-            color: "#EEEEEE",
-            width: 0.5,
-          }
-        },
-      },
-      
-      yAxis: {
-        // y轴值间隔 = max / splitNumber
-        // 以下就是把 最大值20 平均分成 5个点，每个点的间距就是4
-        type: 'value',
-        // interval: 5,  // 步长
-        splitNumber: 5,
-        // max: function(max) {return value.max},
-        // 网格线设置
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: '#EEEEEE',
-            width: .5
-          }
-        },
-      },
-      
-      grid: {
-        top:'15%',
-        left: '5%',
-        containLabel: true,
-        height:'80%',
-        width:'90%',
-      },
+      tooltip:Basis.tooltip('axis'),
+      xAxis:Basis.xAxis(opt.axis),
+      yAxis:Basis.yAxis(),
+      grid:Basis.grid(),
+
+      // x轴 y轴文本 颜色
+      textStyle: {color: '#fff'},
       
       series: [
         {
-          barWidth: 16,  
+          barWidth: 20,  
           borderWidth:0, 
           type: 'bar',
           barGap: '5%',
@@ -470,22 +557,10 @@ class Bar {
     }
 
     return{
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: { // 坐标轴指示器，坐标轴触发有效
-          type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
-          shadowStyle: {
-            color: "rgba(13,139,243,0.2)"
-          }
-        },
-        borderWidth:0,
-        textStyle: {
-          color:"#fff",
-          fontSize:16,
-        },
-        padding:20,
-        backgroundColor:"#000"
-      },
+      tooltip:Basis.tooltip('axis'),
+      grid:Basis.grid(),
+      xAxis:Basis.xAxis(opt.axis),
+      yAxis:Basis.yAxis(),
       textStyle: {
         color: '#fff'
       },
@@ -497,47 +572,40 @@ class Bar {
           color: 'rgba(255,255,255,1)',
         }
       },
-      grid: {
-        top:'15%',
-        left: '5%',
-        containLabel: true,
-        height:'80%',
-        width:'90%',
-      },
-      yAxis: [{
-        type: 'value',
-        axisLabel: {
-          fontSize: 14
-        },
-        axisLine: {
-          lineStyle: {
-            color: '#656e77'
-          }
-        },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            type:"dashed",
-            color: '#656e77'
-          }
-        }
-      }],
-      xAxis: [{
-        type: 'category',
-        axisLabel: {
-          color: '#fff',
-          fontSize: 14
-        },
-        axisLine: {
-          lineStyle: {
-            color: '#656e77'
-          }
-        },
-        axisTick: {
-          show: false
-        },
-        data: opt.axis
-      }],
+      // yAxis: [{
+      //   type: 'value',
+      //   axisLabel: {
+      //     fontSize: 14
+      //   },
+      //   axisLine: {
+      //     lineStyle: {
+      //       color: '#656e77'
+      //     }
+      //   },
+      //   splitLine: {
+      //     show: true,
+      //     lineStyle: {
+      //       type:"dashed",
+      //       color: '#656e77'
+      //     }
+      //   }
+      // }],
+      // xAxis: [{
+      //   type: 'category',
+      //   axisLabel: {
+      //     color: '#fff',
+      //     fontSize: 14
+      //   },
+      //   axisLine: {
+      //     lineStyle: {
+      //       color: '#656e77'
+      //     }
+      //   },
+      //   axisTick: {
+      //     show: false
+      //   },
+      //   data: opt.axis
+      // }],
       //多列
       series: opt.default!=false && series
     }
@@ -561,52 +629,19 @@ class FoldLine {
    */
   renderFoldLine(opt) {
     return {
-      title: opt.title && Basis.titleOp(opt).title,
-      xAxis: {
-        type: 'category',
-        offset: 5,  // x轴标签距离x轴向下偏移
-
-        boundaryGap: false,  // 坐标轴两边不留白(默认刻度位于文本中间，作为分割线)
+      tooltip:Basis.tooltip('axis','line'),
+      grid:Basis.grid(),
+      yAxis:Basis.yAxis(),
+      xAxis:{
+        ...Basis.xAxis(opt.axis),
+        boundaryGap: false, // 坐标轴两边不留白(默认刻度位于文本中间，作为分割线)
         axisTick: {     // 刻度隐藏
           onZero: false ,   //-----------重点 有负值展示
           show: false,
         },
-        axisLine: {
-          lineStyle: {color: '#fff'}
-        },
-        // x轴标签
-        data: opt.axis
       },
-      yAxis: {
-        type: 'value',
-        splitNumber: 5,
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: '#EEEEEE',
-            width: .5
-          }
-        },
-        axisLine: {
-          lineStyle: {color: '#fff'}
-        },
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {  // 坐标轴指示器
-          lineStyle: {
-            width: .5,
-            color: '#5E92F6'
-          }
-        }
-      },
-      grid: {
-        top:"10%",
-        bottom: '10%',
-        left: '3%',
-        right: '4%',
-        containLabel: true,
-      },
+      textStyle: {color: '#fff'},
+ 
       series: [
         {
           data: opt.data,
@@ -617,13 +652,10 @@ class FoldLine {
           // 区域面积
           areaStyle: {
             normal: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: 'rgba(67,155,253, 0.8)'
-              }, {
-                offset: 0.2,
-                color: 'rgba(67,155,253, 0)'
-              }], false),
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {offset: 0,color: 'rgba(67,155,253, 0.8)'}, 
+                {offset: 0.2,color: 'rgba(67,155,253, 0)'}
+              ], false),
               shadowColor: 'rgba(0, 0, 0, 0.2)',
               shadowBlur: 10
             }
@@ -636,33 +668,22 @@ class FoldLine {
 
 //获取最大值
 function getSeriesItemMax(array) {
-  // console.log(array)
   var res = [];
   array.forEach((item) => {
-      item.forEach((i, idx) => {
-          if (!res[idx]) {
-              if (isNaN(i / 1)) {
-                  res[idx] = 0
-              } else {
-                  res[idx] = i / 1
-              }
-          } else {
-              if (isNaN(i / 1)) {
-                  res[idx] += 0
-              } else {
-                  res[idx] += i / 1
-              }
-          }
-      })
+    item.forEach((i, idx) => {
+      if (!res[idx]) {
+        isNaN(i / 1)?res[idx] = 0:res[idx] = i / 1
+      } else {
+        isNaN(i / 1)?res[idx] += 0:res[idx] += i / 1
+      }
+    })
   });
   return Math.max.apply(null, res)
 }
 
 // 刻度最大值
 function yAxisMax(maxValue,it=20) {
-  if (isNaN(maxValue / 1) || maxValue / 1 < 10) {
-    return 10
-  }
+  if (isNaN(maxValue / 1) || maxValue / 1 < 10) return 10;
   const max = Math.ceil(maxValue) + '';
   const itemValue = Math.ceil(max / it) + '';
   const mins = Math.ceil((itemValue / Math.pow(10, itemValue.length - 1)))
@@ -673,7 +694,6 @@ function yAxisMax(maxValue,it=20) {
 }
 
 
-// 堆叠  柱状图折线图组合 
 // 堆叠  柱状图折线图组合 
 class renderMult{
   /**
@@ -729,9 +749,7 @@ class renderMult{
                 color:opt.color && opt.color[index%opt.color.length],
               }
             },
-            lineStyle: {
-              color: "#4bcffa"
-            },
+            lineStyle: {color: "#4bcffa"},
             tooltip: {
               valueFormatter: function (value) {
                 return value + ' ml';
@@ -763,98 +781,18 @@ class renderMult{
     var y2Max = yAxisMax(y2MaxValue,opt.yAxisMax);
 
     return {
-      
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: "shadow"
-        }
+      tooltip:Basis.tooltip('axis'),
+      grid:Basis.grid(),
+      xAxis:Basis.xAxis(opt.axis),
+      legend:{
+        ...Basis.legend(),
+        formatter:'{name}'
       },
-      legend: {
-        right:"5%",
-        top:0,
-        textStyle: {
-          color: "#fff"
-        },
-        // formatter: function (name) {
-        //   console.log("name",name)
-        //   return name
-        // }
-      },
-
-      grid: {
-        top: '15%',
-        bottom: '5%',
-        left: '3%',
-        right: '4%',
-        containLabel:true
-      },
-      xAxis: {
-        type: 'category',
-        data: opt.axis,
-        axisLabel: {
-          color: '#FFF',
-          fontSize: 12,
-          interval:0
-        },
-        splitLine: {
-          show:false
-        },
-        axisLine: {
-          lineStyle: {
-            color: "#354370"
-          }
-        }
-      },
+      // x轴 y轴文本 颜色
+      textStyle: {color: '#fff'},
       yAxis: [
-        {
-          type: 'value',
-          axisLabel: {
-            fontSize: 12,
-            color: "#FFF"
-          },
-          nameTextStyle: {
-            color:"#fff"
-          },
-          axisLine: {
-            show:false
-          },
-          splitLine: {
-            show:true,
-            lineStyle: {
-              color: "#354370"
-            }
-          },
-          axisTick:{
-            show:false
-          },
-          min: 0,
-          max: y1Max,
-        },
-        {
-          type: 'value',
-          axisLabel: {
-            fontSize: 12,
-            color: "#FFF"
-          },
-          nameTextStyle: {
-            color:"#fff"
-          },
-          axisLine: {
-            show:false
-          },
-          splitLine: {
-            show:true,
-            lineStyle: {
-              color: "#354370"
-            }
-          },
-          axisTick:{
-            show:false
-          },
-          min: 0,
-          max: y2Max,
-        }
+        {...Basis.yAxis(),max: y1Max,},
+        {...Basis.yAxis(),max: y2Max,}
       ],
       series: opt.default!=false && series
     }
@@ -930,8 +868,6 @@ class Map{
           }
         }
       ],
-  
-  
       series: [{
         zlevel: 3,
         type: 'effectScatter',
@@ -1653,6 +1589,53 @@ class Gauge {
     }
   }
 }
+
+// 3D 圆环 生成扇形的曲面参数方程，用于 series-surface.parametricEquation
+function getParametricEquation(startRatio,endRatio,isSelected,isHovered,k,h) {
+  // 计算
+  let midRatio = (startRatio + endRatio) / 2;
+
+  let startRadian = startRatio * Math.PI * 2;
+  let endRadian = endRatio * Math.PI * 2;
+  let midRadian = midRatio * Math.PI * 2;
+
+  // 如果只有一个扇形，则不实现选中效果。
+  if (startRatio === 0 && endRatio === 1) {
+    isSelected = false;
+  }
+
+  // 通过扇形内径/外径的值，换算出辅助参数 k（默认值 1/3）
+  k = typeof k !== "undefined" ? k : 1 / 3;
+
+  // 计算选中效果分别在 x 轴、y 轴方向上的位移（未选中，则位移均为 0）
+  let offsetX = isSelected ? Math.cos(midRadian) * 0.1 : 0;
+  let offsetY = isSelected ? Math.sin(midRadian) * 0.1 : 0;
+
+  // 计算高亮效果的放大比例（未高亮，则比例为 1）
+  let hoverRate = isHovered ? 1.05 : 1;
+
+  // 返回曲面参数方程
+  return {
+    u: {min: -Math.PI,max: Math.PI * 3,step: Math.PI / 32,},
+    v: {min: 0,max: Math.PI * 2,step: Math.PI / 20,},
+    x: function (u, v) {
+      if (u < startRadian) return (offsetX + Math.cos(startRadian) * (1 + Math.cos(v) * k) * hoverRate);
+      if (u > endRadian) return (offsetX + Math.cos(endRadian) * (1 + Math.cos(v) * k) * hoverRate);
+      return offsetX + Math.cos(u) * (1 + Math.cos(v) * k) * hoverRate;
+    },
+    y: function (u, v) {
+      if (u < startRadian)return (offsetY + Math.sin(startRadian) * (1 + Math.cos(v) * k) * hoverRate);
+      if (u > endRadian) return (offsetY + Math.sin(endRadian) * (1 + Math.cos(v) * k) * hoverRate);
+      return offsetY + Math.sin(u) * (1 + Math.cos(v) * k) * hoverRate;
+    },
+    z: function (u, v) {
+      if (u < -Math.PI * 0.5)return Math.sin(u);
+      if (u > Math.PI * 2.5)return Math.sin(u) * h * 0.1;
+      return Math.sin(v) > 0 ? 1 * h * 0.1 : -1;
+    },
+  };
+}
+
 
 
 export default {

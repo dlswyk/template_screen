@@ -10,6 +10,30 @@
 .text-959{color:#9599AC};
 .text-999{color:#999}
 
-.page-bg{
-  background-color: #FAFAFA;
+/* 每块渐变色 */
+.custom-box{
+  display: inline-block;
+  padding: 20px 44px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  font-family: HelloFont WenYiHei;
+  color: rgba(255, 255, 255, .9);
+  box-shadow: 0 -1px 1px rgba(255, 255, 255, .6);
+  background-image:linear-gradient(to top,rgba(184, 195, 242, .1),rgba(52, 59, 91, .01));
+}
+
+/* 自定义盒子 渐变色 */
+.custom-box-linear{
+  display: inline-block;
+  width: 180px;
+  line-height: 50px;
+  border-radius: 8px;
+  font-size: 28px;
+  font-family: HelloFont WenYiHei;
+  font-weight: 400;
+  text-align: center;
+  text-shadow: 0 0 4px rgba(255, 255, 255, .9);
+  color: rgba(255, 255, 255, .9);
+  box-shadow: 0 -1px 1px rgba(255, 255, 255, .6);
+  background-image:linear-gradient(to top,rgba(112, 153, 255, .15),rgba(112, 153, 255, 0));
 }

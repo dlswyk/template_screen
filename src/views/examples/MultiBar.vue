@@ -7,31 +7,22 @@ export default  {
   props:{
     vdata:{
       type:Object,
-      default:()=>{
-        return {
-          axis:['Mon', 'Tue', 'Wed', 'Thu'],
-          stack:true,
-          legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
-          data:[
-            [320, 332, 301, 334, 390],
-            [220, 182, 191, 234, 290],
-            [150, 232, 201, 154, 190],
-            [98, 77, 101, 99, 40]
-          ],
-        }
-      }
+      default:()=>({
+        color:[],
+        axis:['Mon', 'Tue', 'Wed', 'Thu'],
+        stack:true,
+        legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
+        data:[
+          [320, 332, 301, 334, 390],
+          [220, 182, 191, 234, 290],
+          [150, 232, 201, 154, 190],
+          [98, 77, 101, 99, 40]
+        ],
+      })
     },
-
-    color:{
-      type:Array,
-      default:()=>[]
-    }
   },
   data(){
     return{}
-  },
-  created() {
-
   },
   mounted() {
     this.getInstance();
@@ -50,14 +41,13 @@ export default  {
 
      // 自定义配置
     custom(option){
-      option.legend.textStyle.color = '#fff';
       option.legend.right = '5%';
       option.legend.show = true;
       option.legend.itemGap = 30
       option.legend.icon = 'roundRect';
 
       option.itemStyle = {
-        borderRadius:[15, 15, 0, 0]
+        borderRadius:[4, 4, 0, 0]
       };
 
       option.label = {
@@ -67,12 +57,13 @@ export default  {
         textBorderColor: 'inherit',
       };
 
-      option.yAxis[0].name = '单位（人）';
-      option.yAxis[0].splitLine.lineStyle = {
+      option.yAxis.name = '单位（人）';
+      option.yAxis.splitLine.lineStyle = {
         type:"solid",
         color: 'rgba(200,200,200,.4)'
       }
-      // [option.xAxis[0],option.yAxis[0]] = [option.yAxis[0],option.xAxis[0]];
+      console.log('option.xAxis',option.xAxis,option.yAxis);
+      [option.xAxis,option.yAxis] = [option.yAxis,option.xAxis];
 
       option.series[0].barWidth = 15;
       option.series[1].barWidth = 15;

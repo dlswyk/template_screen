@@ -1,11 +1,13 @@
 <template>
   <div class='j-full-curbox map'>
     <div class="examples">
-      <p :class="{active:item == com}" v-for='(item,index) in cmps' :key='index' @click="change(item)">{{item}}</p>
+      <p :class="{active:item == com}" class="custom-box-linear" v-for='(item,index) in cmps' :key='index' @click="change(item)">{{item}}</p>
     </div>
     
-    <div class="echart">
-      <component :is='com'></component>
+    <div class="echart custom-box-linear">
+      <keep-alive>
+        <component :is='com'></component>
+      </keep-alive>
     </div>
 
   </div>
@@ -57,33 +59,32 @@ export default {
 </script>
 <style lang='scss' scoped>
   .map{
-    background: linear-gradient(180deg, rgba(110, 181, 223, 0.2) 0%, rgba(132, 219, 235, 0.2) 100%);
+    padding-top: 50px;
     .examples{
-      padding-top: 50px;
       width: 800px;
       margin: auto;
       text-align: center;
       p{
-        display: inline-block;
-        cursor: pointer;
+        width: auto;
+        padding: 0 15px;
+        font-size: 16px;
         margin-right: 10px;
         margin-bottom: 10px;
-        padding: 5px 10px;
-        border-radius: 40px;
-        text-align: center;
-        background-color: #fff;
-        box-sizing: border-box;
-        color: #f33;
+        cursor: pointer;
+        &:hover{
+          opacity: .8;
+        }
         &.active{
           color: #fff;
-          background-color: #f33;
+          background-image:linear-gradient(to top,rgba(185, 120, 255, .1),rgba(185, 120, 255, .2));
         }
       }
     }
 
     .echart{
+      display: block;
       width: 800px;
-      height: 600px;
+      height: 400px;
       margin:20px auto;
       box-shadow: 0 0 2px #fff;
     }

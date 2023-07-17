@@ -7,15 +7,12 @@ export default  {
   props:{
     vdata:{
       type:Object,
-      default:()=>{
-        return{
-          
-          data:[
-            { value: 1048, name: '部门任务数量' },
-            { value: 1048, name: '1231' },
-          ],
-        }
-      }
+      default:()=>({
+        data:[
+          { value: 666, name: 'pieArea1' },
+          { value: 888, name: 'pieArea2' },
+        ]
+      })
     },
 
     color:{

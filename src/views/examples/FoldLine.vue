@@ -7,18 +7,12 @@ export default  {
   props:{
     vdata:{
       type:Object,
-      default:()=>{
-        return {
-          axis:['Mon', 'Tue', 'Wed', 'Thu'],
-          data:[83,66,57,46]
-        }
-      }
+      default:()=>({
+        color:[],
+        axis:['Mon', 'Tue', 'Wed', 'Thu'],
+        data:[83,66,57,46]
+      })
     },
-
-    color:{
-      type:Array,
-      default:()=>[]
-    }
   },
   data(){
     return{
@@ -37,9 +31,16 @@ export default  {
       const { FoldLine, Basis } = this.$mychar;
 
       let option = new FoldLine().renderFoldLine(this.vdata);
+      
+      this.custom(option);
 
       Basis.render(this.$refs.column_con, option);
     },
+
+    // 自定义配置
+    custom(option){
+
+    }
   },
 
   watch:{

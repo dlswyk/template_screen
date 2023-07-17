@@ -1,8 +1,7 @@
 <template>
   <div class="header">
-    <p class="time">{{date.days}} {{date.time}}</p>
     <div class="title">大屏名称</div>
-    <button class="el-button el-button-primary examples" type="primary" @click="skip">栗子</button>
+    <div class="examples custom-box-linear" @click="skip">栗子</div>
     <img class="full" src="@/assets/images/fullscreen.png" alt="" @click="$fullScreen">
   </div>
 </template>
@@ -11,50 +10,15 @@
 export default  {
   data () {
     return {
-      date:{
-        days:"",
-
-        week:"",
-
-        time:""
-      }
     };
   },
 
   created(){
-    // this.formatDate()
   },
 
   methods: {
-    formatDate () {
-      this.timeOut=setTimeout(()=>{
-        const date = new Date()
-        const year = date.getFullYear() // 年
-        const month = date.getMonth() + 1 // 月
-        const day = date.getDate() // 日
-        const week = date.getDay() // 星期
-        const weekArr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-        let hour = date.getHours() // 时
-        hour = hour < 10 ? '0' + hour : hour // 如果只有一位，则前面补零
-        let minute = date.getMinutes() // 分
-        minute = minute < 10 ? '0' + minute : minute // 如果只有一位，则前面补零
-        let second = date.getSeconds() // 秒
-        second = second < 10 ? '0' + second : second // 如果只有一位，则前面补零
-        this.date.days = `${year}年${month}月${day}日`
-        this.date.week = `${weekArr[week]}`
-        this.date.time = `${hour}:${minute}:${second}`
-        this.formatDate();
-      },1000)
-    },
-
     skip(){
       this.$router.push({path:'/examples'})
-    }
-  },
-
-  beforeDestroy () {
-    if (this.timeOut) {
-      clearTimeout(this.timeOut) // 在Vue实例销毁前，清除时间定时器
     }
   },
 }
@@ -63,18 +27,18 @@ export default  {
   .examples{
     position: absolute;
     right: 200px;
-    top: 20px;
-  }
-  .time{
-    position: absolute;
-    left: 100px;
-    top: 20px;
-    color: #fff;
+    top: 15px;
+    width: auto;
+    cursor: pointer;
+    line-height: 30px;
+    padding: 0 20px;
+    font-size: 14px;
   }
   .full{
     position: absolute;
-    right: 100px;
-    top:16px;
+    width: 30px;
+    right: 50px;
+    top:10px;
     cursor: pointer;
   }
   
@@ -89,7 +53,7 @@ export default  {
       letter-spacing: 16px;
       padding-bottom: 20px;
       font-size: 48px;
-      background-image: -webkit-linear-gradient(top,#a2e2df,#00c1ff);
+      background: linear-gradient(to bottom,rgba(235, 247, 254, 0.88) 0%, rgba(255, 255, 255, 0.88) 10%, rgba(103, 151, 232, 0.88) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       &::before{
@@ -100,7 +64,7 @@ export default  {
         position: absolute;
         left: 0;
         bottom: 0;
-        background-image: -webkit-linear-gradient(left,rgba(34,123,117,.1) 1%,#48ffe8 90%,#adfcff);
+        background-image: -webkit-linear-gradient(left,rgba(34,123,117,.1) 1%,rgba(255, 255, 255, 0.5) 90%,rgba(255, 255, 255, .9));
         background-repeat: no-repeat;
         clip-path: polygon(0 1px,615px 0,655px 15px,100% 15px,100% 18px,654px 18px,614px 3px);
         animation: lineHue 7s linear infinite;
@@ -115,7 +79,7 @@ export default  {
         position: absolute;
         left: 0;
         bottom: 0;
-        background-image: -webkit-linear-gradient(left,rgba(34,123,117,.1) 1%,#48ffe8 90%,#adfcff);
+        background-image: -webkit-linear-gradient(left,rgba(34,123,117,.1) 1%,rgba(255, 255, 255, 0.5) 90%,rgba(255, 255, 255, .9));
         background-repeat: no-repeat;
         clip-path: polygon(0 1px,615px 0,655px 15px,100% 15px,100% 18px,654px 18px,614px 3px);
         animation: lineHue 7s linear infinite;

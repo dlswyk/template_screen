@@ -7,25 +7,17 @@ export default  {
   props:{
     vdata:{
       type:Object,
-      default:()=>{
-        return{
-          
-          data:[
-            { value: 1048, name: '部门任务数量' },
-            { value: 1048, name: '464' },
-          ],
-        }
-      }
+      default:()=>({
+        color:['#00FFFF',"#00AEFF","#80FF54","#ff9b00"],
+        data:[
+          { value: 666, name: 'pie1' },
+          { value: 888, name: 'pie2' },
+        ],
+      })
     },
-
-    color:{
-      type:Array,
-      default:()=>[]
-    }
   },
   data(){
     return{
-
       legend:{
         'xx':{
           value:"0%",
@@ -62,29 +54,27 @@ export default  {
 
     // 自定义配置
     custom(option){
-      option.legend.textStyle.color = '#fff';
       option.legend.right = '15%';
       
       option.series[0].center = ["30%","50%"];
       option.series[0].radius = ["40%","80%"];
       option.series[0].roseType = 'radius';
-      option.series[0].color = ['#00FFFF',"#00AEFF","#80FF54","#ff9b00"];
+      option.series[0].color = this.vdata.color;
 
       option.tooltip.formatter = `{b}：{c}件`;
 
-      option.legend.data = [];
+      // option.legend.data = [];
     
       option.legend.itemWidth = 33; //修改icon图形大小
       option.legend.itemHeight = 17; //修改icon图形大小
-      option.legend.selectedMode = false;   // 禁止点击
+      // option.legend.selectedMode = false;   // 禁止点击
 
-      for(let item in this.legend){
-        
-        option.legend.data.push({
-          name:item,
-          icon:'image://'+this.$RESOURE + this.legend[item].icon
-        })
-      }
+      // for(let item in this.legend){
+      //   option.legend.data.push({
+      //     name:item,
+      //     icon:'image://'+this.$RESOURE + this.legend[item].icon
+      //   })
+      // }
 
     
       var total = 0;

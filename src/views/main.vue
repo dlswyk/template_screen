@@ -5,7 +5,7 @@
     </div>
 
 
-    <div class="second bg-box">
+    <div class="second custom-box">
       <Footer></Footer>
     </div> 
     

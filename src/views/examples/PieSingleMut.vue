@@ -7,21 +7,16 @@ export default  {
   props:{
     vdata:{
       type:Object,
-      default:()=>({
-        data:[
-          [
-            { value: 231, name: '男' },
-            { value: 1048, name: '女' },
+      default:()=>{
+        return{
+          data:[
+            { value: 666, name: 'pie1' },
+            { value: 888, name: 'pie2' },
+            { value: 999, name: 'pie3' },
           ],
-          [
-            { value: 231, name: '60-69岁' },
-            { value: 1048, name: '70-79岁' },
-            { value: 1048, name: '80-89岁' },
-            { value: 1048, name: '90-99岁' },
-            { value: 1048, name: '100岁及以上' },
-          ],
-        ],
-      })
+          color:["#3F6FFF", "#4EEBA7",'#F5E440']
+        }
+      }
     },
   },
   mounted() {
@@ -32,7 +27,7 @@ export default  {
     getInstance() {
       const { Pie, Basis } = this.$mychar;
 
-      let option = new Pie().renderMultiPie(this.vdata);
+      let option = new Pie().renderSingleMultiPie(this.vdata);
 
       this.custom(option);
 

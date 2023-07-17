@@ -8,32 +8,23 @@ export default  {
   props:{
     vdata:{
       type:Object,
-      default:()=>{
-        return{
-          axis:['Mon', 'Tue', 'Wed', 'Thu',"Tht"],
-          legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
-          data:[
-            {"title": "Forest",yAxisIndex:1,type:'line',"value":[320, 332, 301, 334, 390]},
-            {"title": "Steppe",yAxisIndex:0,"value":[220, 182, 191, 234, 290]},
-            {"title": "Desert",yAxisIndex:0,"value":[150, 232, 201, 154, 190]},
-            {"title": "Wetland",yAxisIndex:0,"value":[98, 77, 101, 99, 40]},
-          ],
-        }
-      }
+      default:()=>({
+        color:[],
+        axis:['Mon', 'Tue', 'Wed', 'Thu',"Tht"],
+        legend: ['Forest', 'Steppe', 'Desert', 'Wetland'],
+        data:[
+          {"title": "Forest",yAxisIndex:1,type:'line',"value":[320, 332, 301, 334, 390]},
+          {"title": "Steppe",yAxisIndex:0,"value":[220, 182, 191, 234, 290]},
+          {"title": "Desert",yAxisIndex:0,"value":[150, 232, 201, 154, 190]},
+          {"title": "Wetland",yAxisIndex:0,"value":[98, 77, 101, 99, 40]},
+        ],
+      })
     },
-
-    color:{
-      type:Array,
-      default:()=>[]
-    }
   },
   data(){
     return{
       
     }
-  },
-  created() {
-
   },
   mounted() {
     this.getInstance();
