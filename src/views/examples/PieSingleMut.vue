@@ -10,9 +10,9 @@ export default  {
       default:()=>{
         return{
           data:[
-            { value: 666, name: 'pie1' },
+            { value: 999, name: 'pie1' },
             { value: 888, name: 'pie2' },
-            { value: 999, name: 'pie3' },
+            { value: 666, name: 'pie3' },
           ],
           color:["#3F6FFF", "#4EEBA7",'#F5E440']
         }
@@ -30,6 +30,8 @@ export default  {
       let option = new Pie().renderSingleMultiPie(this.vdata);
 
       this.custom(option);
+      console.log('option',option);
+      
 
       Basis.render(this.$refs.column_con, option);
     },
